@@ -1,0 +1,266 @@
+#!/usr/bin/env node
+
+var program = require('commander')
+var mkdirp = require('mkdirp')
+var os = require('os')
+var fs = require('fs')
+var path = require('path')
+var renderer= require('ejs')
+
+var version = require('../package.json').version
+
+function authParser(values){
+    var auths= {};
+    values.length && values.split(':').map(function(value){
+       auths.value= true;
+    });
+    return auths
+}
+
+// CLI
+program
+  .version(version)
+  .usage('[options] [dir]')
+  .option('-t, --template [engine]', 'add template <engine> support [ejs|swig]. Defaults to ejs','ejs')
+  .option('-d, --db [engine]', 'add database <engine> support [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk', 'disk')
+  .option('-c, --css [engine]', 'add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css','plain')
+  .option('-i, --i18n', 'add i18n support', Boolean, false)
+  .option('-s, --session', 'add session support', Boolean, false)
+  .option('-a, --auth [type]', 'add [type] authentication support [facebook|google|github]. Use it like facebook:google for multiples', authParser)
+  .option('-f, --force', 'force on non-empty directory')
+  .parse(process.argv);
+
+// Path
+var source_path=path.join(__dirname, '..', 'templates');
+var destination_path = path.resolve(program.args.shift() || '.');
+
+// App name
+var app_name = path.basename(destination_path);
+
+// Options 
+//view engine
+if(['ejs','swig'].indexOf(program.view)===-1)
+    throw new Error('Invalid view engine "'+program.view+'" ');
+//db
+if(['mysql','postgresql','mongo','redis','memory','disk'].indexOf(program.db)===-1)
+    throw new Error('Invalid db engine "'+program.db+'" ');
+//css engine
+if(['less','stylus','plain'].indexOf(program.css)===-1)
+    throw new Error('Invalid css engine "'+program.css+'" ');
+
+// Generate application
+(function createApplication(path) {
+  emptyDirectory(path, function(empty){
+    if (empty || program.force) {
+      createApplicationAt(path);
+    } else {
+        program.confirm('destination is not empty, continue? ', function(ok){
+            if (ok) {
+                process.stdin.destroy();
+                createApplicationAt(path);
+            } else {
+                abort('aborting');
+            }
+        });
+    }
+  });
+})(destination_path);
+
+/**
+ * Create application at the given directory `path`.
+ *
+ * @param {String} path
+ */
+
+function createApplicationAt(path) {
+mkdir(path , function(){
+    console.log();
+    process.on('exit', function(){
+        console.log();
+        console.log('   install dependencies:');
+        console.log('     $ cd %s && npm install', path);
+        console.log();
+        console.log('   run the app:');
+        console.log('     $ DEBUG=' + app_name + ' ./bin/www');
+        console.log();
+    });
+
+    //###config
+
+    //###controllers
+    mkdir('/controllers', function(){
+        copy_template('controllers/index.ejs','controllers/index.js');
+        if(program.auth){
+            render_template('controllers/auth.ejs','controllers/auth.js',{
+                program: program,
+                name: app_name,
+            });
+        }
+    });
+    
+    mkdir('/configs', function(){
+        render_template('/configs/auth.ejs','/configs/auth.js',{
+            name: app_name,
+            program: program,
+            key: require('crypto').randomBytes(20).digest('hex'),
+        });
+        render_template('configs/database.ejs','configs/database.js');
+        render_template('/configs/main.ejs','/configs/main.js');
+        render_template('configs/routes.ejs','configs/database.js');
+    });
+
+    //###models
+    mkdir('/models', function(){
+        copy_template('models/user.js');
+    });
+    
+    //###locales
+    if(program.i18n){
+        mkdir('/locales', function(){
+            copy_template('locales/en.js');
+        });
+    }
+
+    //###views
+    mkdir('/views', function(){
+        var  baseViewsPath='views/'+program.view;
+        mkdir('/views/site', function(){
+            copy_template(baseViewsPath+'/site/index.html','views/site/index.html');
+            if(program.auth)
+                copy_template(baseViewsPath+'/site/login.html','views/site/login.html');
+        });
+        mkdir('/views/layouts', function(){
+            copy_template(baseViewsPath+'/layouts/main.html', 'views/layouts/main.html');
+            copy_template(baseViewsPath+'/layouts/error.html', 'views/layouts/error.html');
+        });
+    });
+
+    //###web
+    mkdir('/web', function(){
+        mkdir('/web/js');
+        mkdir('/web/img');
+        mkdir('/web/css', function(){
+            // CSS Engine support
+            switch (program.css) {
+                case 'less':
+                    copy_template('/web/css/main.less', '/web/css/main.less');
+                    break;
+                case 'stylus':
+                    copy_template('/web/css/main.styl');
+                    break;
+                default:
+                    copy_template('/web/css/main.css');
+            }
+        });
+    });
+    
+    mkdir('/bin',function(){
+        render_template('/bin/www','/bin/www',{
+            name: app_name,
+            program: program,
+        },0755);
+    });
+
+    render_template('/package.ejs','/package.json',{
+        program: program, 
+        name: app_name
+    },0755);
+
+    render_template('/app.ejs', '/app.js',{
+        name: app_name,
+        program: program,
+    },0755);
+        
+});
+}
+
+/**
+ * Check if the given directory `path` is empty.
+ *
+ * @param {String} path
+ * @param {Function} fn
+ */
+function load_template(name) {
+    return fs.readFileSync(path.join(source_path, name), 'utf-8')
+}
+
+/**
+ * Check if the given directory `path` is empty.
+ *
+ * @param {String} path
+ * @param {Function} fn
+ */
+function copy_template(from, to) {
+    if(!to)
+        to=from;
+    write(to, load_template(from))
+}
+
+/**
+ * Check if the given directory `path` is empty.
+ *
+ * @param {String} path
+ * @param {Function} fn
+ */
+function render_template(from, to, options, mode){
+    if(!to)
+        to=from;
+    if(!options)
+        options={program: program,name: app_name};
+    var str= renderer.render(load_template(from), options);
+    return write(to, str, mode);
+}
+
+/**
+ * Check if the given directory `path` is empty.
+ *
+ * @param {String} path
+ * @param {Function} fn
+ */
+
+function emptyDirectory(path, fn) {
+    fs.readdir(path, function(err, files){
+        if (err && 'ENOENT' != err.code) 
+            throw err;
+        fn(!files || !files.length);
+    });
+}
+
+/**
+ * echo str > path.
+ *
+ * @param {String} path
+ * @param {String} str
+ */
+
+function write(file, str, mode) {
+    var writePath=path.join(destination_path, file);
+    fs.writeFile(writePath, str, { mode: mode || 0666 });
+    console.log('   \x1b[36mcreate\x1b[0m : ' + path);
+}
+
+/**
+ * Mkdir -p.
+ *
+ * @param {String} path
+ * @param {Function} fn
+ */
+
+function mkdir(name, fn) {
+    mkdirp(path.join(destination_path,name), 0755, function(err){
+        if (err) throw err;
+        console.log('   \033[36mcreate\033[0m : ' + path);
+        fn && fn();
+    });
+}
+
+/**
+ * Exit with the given `str`.
+ *
+ * @param {String} str
+ */
+
+function abort(str) {
+    console.error(str);
+    process.exit(1);
+}

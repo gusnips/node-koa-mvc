@@ -1,0 +1,32 @@
+//https://github.com/alexmingoia/koa-router
+var Router= require('koa-router');
+var secured = function *(next) {
+    if (this.isAuthenticated()) {
+        yield next;
+    } else {
+        this.status = 401;
+    }
+}
+
+module.exports=function(passport){
+    var router= new Router();
+    ///// Site
+    var site=require('../controllers/site');
+    
+    //pages
+    router.get('/',site.index);
+    //contact
+    router.post('/contact', site.doContact);
+    
+    //auth
+    router.get('/login', site.login);
+    router.post('/login', site.doLogin);
+    router.all('/logout', site.logout);
+    
+    //register
+    router.get('/register', site.register);
+    router.post('/register', site.doRegister);
+    
+    ///// User
+    var user=require('../controllers/auth');
+}

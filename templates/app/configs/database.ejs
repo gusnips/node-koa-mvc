@@ -1,0 +1,6 @@
+var Waterline = require('waterline'),
+    waterline= new Waterline()
+module.exports=function(config, callback){
+    waterline.initialize(config,callback)
+    return waterline
+};

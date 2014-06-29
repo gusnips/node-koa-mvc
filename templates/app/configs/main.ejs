@@ -1,0 +1,128 @@
+var path=require('path')
+
+var env=process.env.NODE_ENV || 'development'
+var port=process.env.PORT || 3000
+var host= 'http://localhost'+(port!=80 ? ':'+port : '');
+
+var DEBUG=env !== 'production'
+
+module.exports={
+    //http://koajs.com/#application
+    name:"<%=name%>",
+    keys: ['<%=key%>'],
+    env: env,
+    port: port,
+    //https://github.com/koajs/static#options
+    static: {
+        directory: path.resolve(__dirname,'../web')
+    },
+    //https://github.com/koajs/body-parser#options
+    bodyparser: {},
+    //https://github.com/koajs/generic-session#options
+<% if(program.session){ %>
+    session: {
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24//24 hours
+        }
+    },
+<% } %>
+<% if(program.auth){ %>
+    //https://github.com/rkusa/koa-passport
+    //https://github.com/rkusa/koa-passport-example
+    auth: {
+        //https://github.com/jaredhanson/passport-facebook
+<% if(program.auth.facebook){ %>
+        facebook:{
+            clientID: 'your-client-id',
+            clientSecret: 'your-secret',
+            callbackURL: host + '/auth/facebook/callback'
+        },
+<% } %>
+<% if(program.auth.google){ %>
+        //https://github.com/jaredhanson/passport-google
+        google: {
+            returnURL: host + '/auth/google/callback',
+            realm: host
+        },
+<% } %>
+<% if(program.auth.github){ %>
+        //https://github.com/jaredhanson/passport-github
+        github: {
+            clientID: 'your-client-id',
+            clientSecret: 'your-secret',
+            callbackURL: host + '/auth/github/callback'
+        }
+<% } %>
+    },
+<% } %>
+    <% if(program.view==='ejs'){ %>
+        //https://github.com/koajs/ejs
+    <% } else if(program.view==='swig'){ %>
+        //https://github.com/fundon/koa-swig
+    <% } %>
+    view: {
+        root: path.resolve(__dirname, '../views'),
+        cache: DEBUG ? false : 'memory',
+        locals: {},
+        filters: {},
+<% if(program.view==='ejs'){ %>
+        layout: 'layouts/main',
+<% } %>
+    },
+<% if(program.i18n){ %>
+    //https://github.com/fundon/koa-locale#usage
+    locale: {},
+    //https://github.com/fundon/koa-i18n
+    i18n: {
+        directory: path.resolve(__dirname, '../locales'),
+        defaultLocale: 'en', //When you pass in an array of locales the first locale is automatically set as the defaultLocale.
+        locales: ['en'],
+        query: false,
+        subdomain: true,
+        cookie: false,
+        header: false
+    },
+<% } %>
+    //https://github.com/balderdashy/waterline
+    //https://github.com/balderdashy/waterline-docs#supported-adapters
+    db: {
+        // Setup Adapters
+        // Creates named adapters that have been required
+        adapters: {
+            'default': require('sails-<%=program.db%>'),
+        },
+        // Build Connections Config
+        // Setup connections using the named adapter configs
+        connections: {
+            'default': {
+                adapter: 'default',
+<% if(program.db in ['mysql','postgresql','mongodb']){ %>
+                host: 'localhost',
+                user: 'root',
+                password: '',
+                database: '<%=name%>'
+<% } %>
+            }
+        }
+     
+    },
+<% if(program.view==='ejs'){ %>
+    //https://github.com/gusnips/koa-error-ejs
+<% } else if(program.view==='swig'){ %>
+    //https://github.com/koajs/error
+<% } %>
+    error: {
+<% if(program.view==='swig'){ %>
+        template: 'layouts/error',
+<% } else if(program.view==='ejs'){ %>
+        view: 'error/error',
+        layout: 'layouts/error',
+        custom: {
+            401: 'error/401',
+            403: 'error/403',
+            404: 'error/404',
+            500: 'error/error'
+        }
+<% } %>
+    },
+}

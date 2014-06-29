@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-lg-offset-3 col-md-offset-3 col-sm-offset-2 col-lg-6 col-sm-8 col-md-6" style="margin-top:100px">
+        <br />
+        <h1 style="text-align:center;margin-top:50px"><span style="font-size:84px;">500</span></h1>
+        <h3 style="text-align:center;"><%-error%></h3>
+        <p style="text-align:center;margin-bottom:50px">
+            Sorry an error has occurred, please try refreshing the page or
+            <br /><br />navigate back to <a href="/">Home</a>
+        </p>
+    	<% if(env == 'development'){%>
+      	<pre>
+          <code>
+	    <%-stack%>
+          </code>
+      	</pre>
+    	<% } %>
+        <br />
+    </div>
+</div>

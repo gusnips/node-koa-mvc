@@ -1,0 +1,56 @@
+<style>.icon-login{width:16px; height:20px}</style>
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6" style="border-right: 1px solid #ddd">
+        <form class="form center-block col-md-10 col-md-offset-1" action="/login">
+          <legend>Login</legend>
+          <div class="form-group">
+            <input type="text" class="form-control input-lg" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control input-lg" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary btn-lg btn-block">Sign In</button>
+            <span class="pull-right"><a href="/reset-password">Forgot your password?</a></span>
+          </div>
+          <div style="text-align: center">
+                <div class="btn-group">
+                    <a class='btn btn-danger disabled'><i class="fa fa-google-plus icon-login"></i></a>
+                    <a class='btn btn-danger' href='' style="width:12em;"> Sign in with Google</a>
+                </div>
+                &nbsp;&nbsp;
+                <div class="btn-group">
+                    <a class='btn btn-primary disabled'><i class="fa fa-facebook icon-login"></i></a>
+                    <a class='btn btn-primary' href='' style="width:12em"> Sign in with Facebook</a>
+                </div>    
+                &nbsp;&nbsp;
+                <div class="btn-group">
+                    <a class='btn btn-info disabled'><i class="fa fa-twitter icon-login"></i></a>
+                    <a class='btn btn-info ' href='' style="width:12em"> Sign in with Twitter</a>
+                </div>
+                &nbsp;&nbsp;
+          </div>
+        </form>
+      </div>
+      <div class="col-md-6" style="border-right: 1px solid #ddd">
+        <form class="form center-block col-md-10 col-md-offset-1" action="/register">
+          <legend>Not a member yet?</legend>
+          <div class="form-group">
+            <input type="text" class="form-control input-lg" placeholder="Your Email">
+          </div>
+          <div class="form-group">
+            <input type="password" name="password" class="form-control input-lg" placeholder="New Password">
+          </div>
+          <div class="form-group">
+            <input type="password" name="repeatPassword" class="form-control input-lg" placeholder="Repeat the new password">
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary btn-lg btn-block">Register</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

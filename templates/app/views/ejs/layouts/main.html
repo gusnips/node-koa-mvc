@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+    <head>
+        <meta charset='<%= cs.charset%>'>
+        <title><%= cs.title%></title>
+        <meta name="description" content="<%= cs.description%>">
+        <meta name="keywords" content="<%= cs.keywords%>">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link type="text/css" href="" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" />
+        <link type="text/css" href="" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css" />
+        <link type="text/css" href="" rel="stylesheet" href="/css/main.css" />
+        <!--[if lt IE 9]>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!-- header -->
+        <% include _header.html %>
+        <!-- messages -->
+        <% include _messages.html %>
+        <!-- content -->
+        <%- body %>
+        <!-- footer -->
+        <footer id="c">
+            <p class="container" style="text-align: center">
+                Powered by <a href="https://github.com/gusnips/kore-seed/" target="_new">KORE</a>
+            </p>
+        </footer>
+        <!-- render scripts -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="/js/main.js"></script>
+    </body>
+</html>

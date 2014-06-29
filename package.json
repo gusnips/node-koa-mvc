@@ -1,0 +1,36 @@
+{
+    "name": "koa-mvc",
+    "description": "Koa MVC generator",
+    "version": "0.0.1",
+    "author": "Gustavo Salomé Silva <gustavonips@gmail.com>",
+    "dependencies": {
+        "commander": "^1.3.2",
+        "mkdirp": "^0.3.5",
+        "ejs": "*"
+    },
+    "keywords": [
+        "koa",
+        "bootstrap",
+        "seed",
+        "mvc",
+        "seed",
+        "boilerplate"
+    ],
+    "main": "bin/koa-mvc",
+    "bin": {
+        "koa-mvc": "./bin/koa-mvc"
+    },
+    "engines": {
+        "node": ">= 0.11.9"
+    },
+    "readmeFilename": "README.md",
+    "homepage": "https://github.com/gusnips/node-koa-mvc",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:gusnips/node-koa-mvc.git"
+    },
+    "bugs": {
+        "url": "https://github.com/gusnips/node-koa-mvc/issues"
+    },
+    "license": "MIT"
+}

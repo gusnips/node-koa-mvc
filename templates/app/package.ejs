@@ -1,0 +1,53 @@
+{
+    "name": "<%=name%>",
+    "version": "0.0.1",
+    "private": "true",
+    "description": "Generated with koa-mvc",
+    "dependencies": {
+        "koa": "^0.7.0",
+        "koa-bodyparser": "*",
+        "koa-static": "^1.4.5",
+        "koa-router": "^3.1.4",
+<% if(program.session){ %>
+        "koa-generic-session": "^1.0.0",
+        "koa-flash": "^0.0.3",
+<% }%>
+<% if(program.view==='ejs'){%>
+        "koa-ejs": "^1.0.1",
+        "koa-error-ejs": "^1.0.1",
+<% } else if(program.view==='swig'){%>
+        "koa-swig": "*",
+        "koa-error": "*",
+<% }%>
+<% if(program.i18n){%>
+        "koa-i18n": "^0.1.4",
+        "koa-locale": "^0.1.1",
+<% }%>
+<% if(program.css==='less'){%>
+        "koa-less": "0",
+<% }%>
+<% } else if(program.css==='stylus'){%>
+        "koa-stylus": "0",
+<% }%>
+<% if(program.auth.facebook){%>
+        "passport-facebook": "*",
+<% }%>
+<% if(program.auth.google){%>
+        "passport-google": "*",
+<% }%>
+<% if(program.auth.github){%>
+        "passport-github": "*",
+<% }%>
+        "waterline": "*",
+        "sails-<%=program.db%>": "*"
+    },
+    "devDependencies": {
+    },
+    "engines": {
+        "node": ">= 11"
+    },
+    "scripts": {
+        "start": "node ./bin/www",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    }
+}
