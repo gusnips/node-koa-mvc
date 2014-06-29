@@ -1,3 +1,4 @@
+"use strict";
 var path=require('path')
 
 var env=process.env.NODE_ENV || 'development'
@@ -19,57 +20,64 @@ module.exports={
     //https://github.com/koajs/body-parser#options
     bodyparser: {},
     //https://github.com/koajs/generic-session#options
-<% if(program.session){ %>
+<% if(program.session){ -%>
     session: {
         cookie: {
             maxAge: 1000 * 60 * 60 * 24//24 hours
         }
     },
-<% } %>
-<% if(program.auth){ %>
+<% } -%>
+<% if(program.auth){ -%>
     //https://github.com/rkusa/koa-passport
-    //https://github.com/rkusa/koa-passport-example
     auth: {
+<% if(program.auth.facebook){ -%>
         //https://github.com/jaredhanson/passport-facebook
-<% if(program.auth.facebook){ %>
         facebook:{
             clientID: 'your-client-id',
             clientSecret: 'your-secret',
             callbackURL: host + '/auth/facebook/callback'
         },
-<% } %>
-<% if(program.auth.google){ %>
+<% } -%>
+<% if(program.auth.google){ -%>
         //https://github.com/jaredhanson/passport-google
         google: {
             returnURL: host + '/auth/google/callback',
             realm: host
         },
-<% } %>
-<% if(program.auth.github){ %>
+<% } -%>
+<% if(program.auth.bitbucket){ -%>
+        //https://github.com/jaredhanson/passport-bitbucket
+        bitbucket: {
+            consumerKey: 'your-client-id',
+            consumerSecret: 'your-secret',
+            callbackURL: host + '/auth/bitbucket/callback'
+        },
+<% } -%>
+<% if(program.auth.github){ -%>
         //https://github.com/jaredhanson/passport-github
         github: {
             clientID: 'your-client-id',
             clientSecret: 'your-secret',
             callbackURL: host + '/auth/github/callback'
-        }
-<% } %>
+        },
+<% } -%>
     },
-<% } %>
-    <% if(program.view==='ejs'){ %>
-        //https://github.com/koajs/ejs
-    <% } else if(program.view==='swig'){ %>
-        //https://github.com/fundon/koa-swig
-    <% } %>
+<% } -%>
+    <% if(program.template==='ejs'){ -%>
+    //https://github.com/koajs/ejs
+    <% } else if(program.template==='swig'){ -%>
+    //https://github.com/fundon/koa-swig
+    <% } -%>
     view: {
         root: path.resolve(__dirname, '../views'),
         cache: DEBUG ? false : 'memory',
-        locals: {},
-        filters: {},
-<% if(program.view==='ejs'){ %>
+        locals: require('./view-locals'),
+        filters: require('./view-filters'),
+<% if(program.template==='ejs'){ -%>
         layout: 'layouts/main',
-<% } %>
+<% } -%>
     },
-<% if(program.i18n){ %>
+<% if(program.i18n){ -%>
     //https://github.com/fundon/koa-locale#usage
     locale: {},
     //https://github.com/fundon/koa-i18n
@@ -82,10 +90,10 @@ module.exports={
         cookie: false,
         header: false
     },
-<% } %>
+<% } -%>
     //https://github.com/balderdashy/waterline
     //https://github.com/balderdashy/waterline-docs#supported-adapters
-    db: {
+    database: {
         // Setup Adapters
         // Creates named adapters that have been required
         adapters: {
@@ -96,25 +104,28 @@ module.exports={
         connections: {
             'default': {
                 adapter: 'default',
-<% if(program.db in ['mysql','postgresql','mongodb']){ %>
+<% if(['mysql','postgresql','mongodb'].indexOf(program.db)!==-1){ -%>
                 host: 'localhost',
                 user: 'root',
                 password: '',
                 database: '<%=name%>'
-<% } %>
+<% } -%>
             }
+        },
+        defaults: {
+            migrate: 'alter'
         }
      
     },
-<% if(program.view==='ejs'){ %>
+<% if(program.template==='ejs'){ -%>
     //https://github.com/gusnips/koa-error-ejs
-<% } else if(program.view==='swig'){ %>
+<% } else if(program.template==='swig'){ -%>
     //https://github.com/koajs/error
-<% } %>
+<% } -%>
     error: {
-<% if(program.view==='swig'){ %>
+<% if(program.template==='swig'){ -%>
         template: 'layouts/error',
-<% } else if(program.view==='ejs'){ %>
+<% } else if(program.template==='ejs'){ -%>
         view: 'error/error',
         layout: 'layouts/error',
         custom: {
@@ -123,6 +134,6 @@ module.exports={
             404: 'error/404',
             500: 'error/error'
         }
-<% } %>
+<% } -%>
     },
 }

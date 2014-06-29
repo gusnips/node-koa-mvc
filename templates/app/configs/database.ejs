@@ -1,6 +1,10 @@
-var Waterline = require('waterline'),
-    waterline= new Waterline()
-module.exports=function(config, callback){
-    waterline.initialize(config,callback)
-    return waterline
-};
+"use strict";
+var Waterline= require('waterline')
+var orm= new Waterline()
+module.exports=function(app, config, callback){
+    var user= require('../models/user');
+    orm.loadCollection(user);
+    
+    orm.initialize(config, callback)
+    return orm
+}

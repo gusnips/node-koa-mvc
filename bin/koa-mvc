@@ -12,7 +12,7 @@ var version = require('../package.json').version
 function authParser(values){
     var auths= {};
     values.length && values.split(':').map(function(value){
-       auths.value= true;
+       auths[value]= true;
     });
     return auths
 }
@@ -26,21 +26,21 @@ program
   .option('-c, --css [engine]', 'add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css','plain')
   .option('-i, --i18n', 'add i18n support', Boolean, false)
   .option('-s, --session', 'add session support', Boolean, false)
-  .option('-a, --auth [type]', 'add [type] authentication support [facebook|google|github]. Use it like facebook:google for multiples', authParser)
+  .option('-a, --auth [type]', 'add [type] authentication support [facebook|google|github|bitbucket]. Use it like facebook:google for multiples', authParser)
   .option('-f, --force', 'force on non-empty directory')
   .parse(process.argv);
 
 // Path
-var source_path=path.join(__dirname, '..', 'templates');
+var source_path=path.join(__dirname, '..', 'templates','app');
 var destination_path = path.resolve(program.args.shift() || '.');
 
 // App name
 var app_name = path.basename(destination_path);
 
 // Options 
-//view engine
-if(['ejs','swig'].indexOf(program.view)===-1)
-    throw new Error('Invalid view engine "'+program.view+'" ');
+//template engine
+if(['ejs','swig'].indexOf(program.template)===-1)
+    throw new Error('Invalid template engine "'+program.template+'" ');
 //db
 if(['mysql','postgresql','mongo','redis','memory','disk'].indexOf(program.db)===-1)
     throw new Error('Invalid db engine "'+program.db+'" ');
@@ -54,7 +54,7 @@ if(['less','stylus','plain'].indexOf(program.css)===-1)
     if (empty || program.force) {
       createApplicationAt(path);
     } else {
-        program.confirm('destination is not empty, continue? ', function(ok){
+        program.confirm('destination "'+path+'" is not empty, continue? ', function(ok){
             if (ok) {
                 process.stdin.destroy();
                 createApplicationAt(path);
@@ -73,7 +73,8 @@ if(['less','stylus','plain'].indexOf(program.css)===-1)
  */
 
 function createApplicationAt(path) {
-mkdir(path , function(){
+mkdirp(path, 0755, function(err){
+    if (err) throw err;
     console.log();
     process.on('exit', function(){
         console.log();
@@ -89,7 +90,7 @@ mkdir(path , function(){
 
     //###controllers
     mkdir('/controllers', function(){
-        copy_template('controllers/index.ejs','controllers/index.js');
+        copy_template('controllers/site.ejs','controllers/site.js');
         if(program.auth){
             render_template('controllers/auth.ejs','controllers/auth.js',{
                 program: program,
@@ -99,14 +100,17 @@ mkdir(path , function(){
     });
     
     mkdir('/configs', function(){
-        render_template('/configs/auth.ejs','/configs/auth.js',{
+        render_template('/configs/main.ejs','/configs/main.js',{
             name: app_name,
             program: program,
-            key: require('crypto').randomBytes(20).digest('hex'),
+            key: require('crypto').randomBytes(20).toString('hex'),
         });
         render_template('configs/database.ejs','configs/database.js');
-        render_template('/configs/main.ejs','/configs/main.js');
-        render_template('configs/routes.ejs','configs/database.js');
+        render_template('configs/routes.ejs','configs/routes.js');
+        render_template('configs/view-locals.ejs','configs/view-locals.js');
+        render_template('configs/view-filters.ejs','configs/view-filters.js');
+        if(program.auth)
+            render_template('/configs/auth.ejs','/configs/auth.js');
     });
 
     //###models
@@ -123,11 +127,14 @@ mkdir(path , function(){
 
     //###views
     mkdir('/views', function(){
-        var  baseViewsPath='views/'+program.view;
+        var  baseViewsPath='views/'+program.template;
         mkdir('/views/site', function(){
             copy_template(baseViewsPath+'/site/index.html','views/site/index.html');
             if(program.auth)
                 copy_template(baseViewsPath+'/site/login.html','views/site/login.html');
+        });
+        mkdir('/views/error', function(){
+            copy_template(baseViewsPath+'/error/error.html', 'views/error/error.html');
         });
         mkdir('/views/layouts', function(){
             copy_template(baseViewsPath+'/layouts/main.html', 'views/layouts/main.html');
@@ -233,10 +240,13 @@ function emptyDirectory(path, fn) {
  * @param {String} str
  */
 
-function write(file, str, mode) {
+function write(file, str, mode, fn) {
     var writePath=path.join(destination_path, file);
-    fs.writeFile(writePath, str, { mode: mode || 0666 });
-    console.log('   \x1b[36mcreate\x1b[0m : ' + path);
+    fs.writeFile(writePath, str, { mode: mode || 0666 },function(err){
+        if (err) throw err;
+        console.log('   \x1b[36mcreate\x1b[0m : ' + writePath);
+        fn && fn();
+    });
 }
 
 /**
@@ -247,9 +257,10 @@ function write(file, str, mode) {
  */
 
 function mkdir(name, fn) {
-    mkdirp(path.join(destination_path,name), 0755, function(err){
+    var writePath=path.join(destination_path,name);
+    mkdirp(writePath, 0755, function(err){
         if (err) throw err;
-        console.log('   \033[36mcreate\033[0m : ' + path);
+        console.log('   \033[36mcreate\033[0m : ' + writePath);
         fn && fn();
     });
 }

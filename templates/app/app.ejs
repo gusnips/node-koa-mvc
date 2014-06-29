@@ -1,3 +1,4 @@
+"use strict";
 var config= require('./configs/main')
 var app= require('koa')()
 
@@ -7,44 +8,44 @@ app.env= config.env
 
 app.use(require('koa-bodyparser')(config.bodyparser))
 app.use(require('koa-static')(config.static.directory, config.static))
-
-<% if(program.css==='less'){ %>
+<% if(program.css==='less'){ -%>
 app.use(require('koa-less')(config.static.directory))
-<% } else if(program.css==='stylus') %>
+<% } else if(program.css==='stylus'){ -%>
 app.use(require('koa-stylus')(config.static.directory))
-<% } %>
-
-<% if(program.i18n){ %>
-require('koa-locale')(app);
+<% } -%>
+<% if(program.i18n){ -%>
+require('koa-locale')(app)
 app.use(require('koa-i18n')(app, config.i18n))
-<% } %>
+<% } -%>
 
-<% if(program.session){ %>
+<% if(program.session){ -%>
 app.use(require('koa-generic-session')(config.session))
 app.use(require('koa-flash')(config.flash))
-<% } %>
+<% } -%>
 
-<% if(program.view==='ejs'){ %>
+<% if(program.template==='ejs'){ -%>
 require('koa-ejs')(app, config.view)
 app.use(require('koa-error-ejs')(config.error))
-<% } else if(program.view==='swig') %>
+<% } else if(program.template==='swig'){ -%>
 require('koa-swig')(app, config.view)
 app.use(require('koa-error')(config.error))
-<% } %>
+<% } -%>
 
-<% if(program.auth){ %>
+<% if(program.auth){ -%>
 var passport=require('./configs/auth')(app, config.auth)
 app.use(passport.initialize())
-<% if(program.session){ %>
+<% if(program.session){ -%>
 app.use(passport.session())
-<% } %>
-<% } %>
+<% } -%>
+<% } -%>
 
-require('./configs/routes')(app, config.routes)
+require('./configs/routes')(app, passport);
 require('./configs/database')(app, config.database, function(err, ontology){
     if(err)
         throw err
-    console.log('database adapter initialized',ontology)
+    app.context.models=ontology.collections;
+    console.log(app.context.models);
+    console.log('database adapter initialized')
 })
 
 app.listen(config.port || 3000, function(){

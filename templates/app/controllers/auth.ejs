@@ -1,6 +1,26 @@
+"use strict";
 //Auth controller
-module.exports=function(passport){
-    return {
-        
+//login and register
+module.exports={
+    login: function *(){
+        yield this.render('site/login')
+    },
+    logout: function *(){
+        <% if(program.session){%>
+     	this.flash.success='See you soon!'
+     	<% } %>
+     	this.redirect('/')
+    },
+    doLogin: function *(){
+     	this.body={success: true}
+    },
+    register: function *(){
+     	yield this.render('site/login')
+    },
+    doRegister: function *(){
+     	this.body={success: true}
+    },
+    authSuccess: function(){
+        this.redirect('/')
     }
 }

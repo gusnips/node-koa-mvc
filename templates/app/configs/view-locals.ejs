@@ -1,0 +1,15 @@
+"use strict";
+//view locals
+module.exports={
+    name: '<%=: name %>',
+    title: '<%=: name|capitalize %>',
+    description: '',
+    <% if(program.auth){ -%>
+    user: function(){
+        return this.request.user;
+    },
+    isAuthenticated: function(){
+        return this.isAuthenticated()
+    },
+    <% } -%>
+}

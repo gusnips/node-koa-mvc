@@ -1,42 +1,10 @@
+"use strict"
 //Site controller
-var Site={};
-module.exports=Site;
-//home page
-Site.index= function *(){
-    //db call example
-    var dbs= yield this.db.server.list();
-    yield this.render('site/video',{text: 'There are ' + dbs.length + ' databases on the server.'});
-};
-
-//contact
-Site.doContact= function *(){
-    this.body={success: true};
-};
-
-//login
-Site.login= function *(){
-    yield this.render('site/login');
-};
-Site.doLogin= function *(){
- 	this.body={success: true};
-};
-Site.logout= function *(){
- 	this.flash.success='See you soon!'
- 	this.redirect('/');
-};
-
-//reset password
-Site.reset= function *(){
-    yield this.render('site/reset');
-};
-Site.doReset= function *(){
-    this.body=yield {success: true};
-};
-
-//register
-Site.register= function *(){
- 	yield this.render('site/login');
-};
-Site.doRegister= function *(){
- 	this.body={success: true};
-};
+module.exports={
+    index: function *(){
+        yield this.render('site/index')
+    },
+    doContact: function *(){
+        this.body={success: true}
+    }
+}

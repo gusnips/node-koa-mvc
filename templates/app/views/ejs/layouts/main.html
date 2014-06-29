@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
     <head>
-        <meta charset='<%= cs.charset%>'>
-        <title><%= cs.title%></title>
-        <meta name="description" content="<%= cs.description%>">
-        <meta name="keywords" content="<%= cs.keywords%>">
+        <title><%= title%></title>
+        <meta charset='utf-8'>
+        <meta name="description" content="<%= description%>">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link type="text/css" href="" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" />
         <link type="text/css" href="" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css" />
@@ -15,16 +14,106 @@
         <![endif]-->
     </head>
     <body>
-        <!-- header -->
-        <% include _header.html %>
-        <!-- messages -->
-        <% include _messages.html %>
+        <header id="navigation" class="navbar navbar-default navbar-fixed-top" role="banner">
+            <div class="container">
+                <div class="navbar-header">
+                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".tr-navbar-collapse">
+                        <span class="fa fa-bar"></span>
+                        <span class="fa fa-bar"></span>
+                        <span class="fa fa-bar"></span>
+                    </button>
+                    <div id="logo"></div>
+                    <a href="/" class="navbar-brand"><%=title%></a>
+                </div>
+                <nav class="collapse navbar-collapse tr-navbar-collapse" role="navigation">
+                    <ul class="nav navbar-nav" id="navbar">
+                        <li class="active"><a href="#home" class="smothscroll">Home</a></li>
+                        <li><a href="#desc" class="smothscroll">Description</a></li>
+                        <li><a href="#showcase" class="smothScroll">Showcase</a></li>
+                        <li><a href="#contact" class="smothScroll">Contact</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                    <% if(isAuthenticated){ -%>
+                        <li class="dropdown">
+                            Logged in as <a  href="#" class="dropdown-toggle" data-toggle="dropdown" class="navbar-link">Username <b class="caret"></b></a>|
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="/logout"><i class="fa fa-sign-out"></i> Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    <% }else{ -%>
+                        <li><a href="#" data-toggle="modal" data-target="#loginModal"><i class="fa fa-sign-in"></i> Login</a></li>
+                        <li><a href="/register"><i class="fa fa-users"></i> Register</a></li>
+                    <% } %>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        
+        <% if(!isAuthenticated){ -%>
+        <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  <h1 class="text-center">Login</h1>
+              </div>
+              <div class="modal-body">
+                  <form class="form col-md-12 center-block" action="/login" id="loginForm">
+                    <div class="form-group">
+                      <input type="text" class="form-control input-lg" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                      <input type="password" class="form-control input-lg" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                      <button class="btn btn-primary btn-lg btn-block"><i class="fa fa-sign-in"></i> Sign In</button>
+                      <span class="pull-right"><a href="/register"><i class="fa fa-users"></i> Register</a></span>
+                      <span><a href="/reset-password"><i class="fa fa-support"></i> Need help?</a></span>
+                    </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <div class="col-md-12">
+                  <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                  </div>    
+              </div>
+          </div>
+          </div>
+        </div>
+        <% } -%>
+        <% if(flash) -%>
+        <div class='container'>
+            <div class='messages row' style="margin-top: 20px;">
+                <div class='col-md-12'>
+                    <div class="alert alert-danger" <% if (!flash.error) { %> style="display:none" <% } %>>
+                        <a class="close" data-dismiss="alert">x</a>
+                        <span></span>
+                        <%=flash.error %>
+                    </div>
+                    <div class="alert alert-warning" <% if (!flash.warning) { %> style="display:none" <% } %>>
+                        <a class="close" data-dismiss="alert">x</a>
+                        <%=flash.warning %>
+                    </div>
+                    <div class="alert alert-info" <% if (!flash.info) { %> style="display:none" <% } %>>
+                        <a class="close" data-dismiss="alert">x</a>
+                        <%=message.info %>
+                    </div>
+                    <div class="alert alert-success" <% if (!flash.success) { %> style="display:none" <% } %>>
+                        <a class="close" data-dismiss="alert">x</a>
+                        <%=flash.success %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } -%>
         <!-- content -->
         <%- body %>
         <!-- footer -->
         <footer id="c">
             <p class="container" style="text-align: center">
-                Powered by <a href="https://github.com/gusnips/kore-seed/" target="_new">KORE</a>
+                Powered by <a href="https://github.com/gusnips/node-koa-mvc/" target="_new">koa-mvc</a>
             </p>
         </footer>
         <!-- render scripts -->
