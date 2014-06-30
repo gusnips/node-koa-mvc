@@ -22,27 +22,75 @@
  Rock and Roll
 
 ```bash
-    $ node app
+    $ node --harmony app
 ```
 
 ## Options
 
- `-t, --theme [name]`  
- switch application theme to <name> [white|green|violet|red]. Defaults to red.  
- `-d, --db [engine]`  
- change database <engine> to one of [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk.  
- `-c, --css [engine]`  
- add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css.  
- `-S, --no-session` remove [session](https://github.com/koajs/generic-session) support. Session is enabled by default.  
- `-a, --auth [type]`  
- add [type] authentication support [facebook|google|github|bitbucket|local]. Type is optional.  
- Use ':' as separator for multiples (f.x. facebook:google). Defaults to local only. Set as 0 to disable.  
- `-e, --template [engine]`  
- change template engine. Support [ejs] only for now. Defaults to ejs.  
- `-i, --i18n`  
- add i18n support. Translations used by [i18n-node-2](https://github.com/jeresig/i18n-node-2) ported to [koa-i18n](https://github.com/fundon/koa-i18n)  
- `-f, --force`  
- force on non-empty directory  
+ `-t, --theme [name]`
+   switch application theme to <name> [white|green|violet|red]. Defaults to red.
+ `-d, --db [engine]`
+   change database <engine> to one of [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk.
+ `-c, --css [engine]`
+   add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css.
+ `-S, --no-session` remove [session](https://github.com/koajs/generic-session) support. Session is enabled by default.
+ `-a, --auth [type]`
+   add [type] authentication support [facebook|google|github|bitbucket|local]. Type is optional.
+   Use ':' as separator for multiples (f.x. facebook:google). Defaults to local only. Set as 0 to disable.
+ `-e, --template [engine]`
+   change template engine. Support [ejs] only for now. Defaults to ejs.
+ `-i, --i18n`
+   add i18n support. Translations used by [i18n-node-2](https://github.com/jeresig/i18n-node-2) ported to [koa-i18n](https://github.com/fundon/koa-i18n)
+ `-f, --force`
+   force on non-empty directory
+ 
+   Example using layout green, mysql as db, facebook and google authentication:
+ 
+ ```bash
+    $ koa-mvc ~/www/test-koa-mvc -t green --db mysql -a facebook:google
+    $ cd ~/www/test-koa-mvc
+    $ sudo npm install
+    $ node --harmony app  # server will now be running on localhost:3000
+```
+
+## Roadmap
+
++ Finish authentication
++ add swig template engine
++ better i18n support (actually use it in the views to translate)
++ add tests
+
+## Notes
+  
+ Koa currently requires node 0.11.x for the --harmony flag which exposes generators to your script. If you're running an earlier version of node you may install [n](https://github.com/visionmedia/n), a node version manager to quickly install 0.11.x:
+
+```
+$ npm install -g n
+$ n 0.11.13
+```
+
+## Structure
+
++ [configs] routes, general app stuff, authorization
++ - `main` application configuration
++ - `auth` authorization and authentication config
++ - `database` load models and initialize the database here
++ - `routes` load controllers and define the routes
++ [controllers] plain objects to use its methods as routes
++ - `site`
++ - `auth` authentication and authorization methods
++ [locales] if i18n option is set
++ [models] uses [Waterline ORM](https://github.com/balderdashy/waterline/)
++ [views] the V
++ - [error] error views (401,403,404,error)
++ - [layouts] layouts folder (main, error)
++ - [site] application views (index, login)
++ [web] public folder
++ - [css]
++ - - `main.css`
++ - [img]
++ - [js]
++ - - `main.js`
 
 ## Uses
 
@@ -62,37 +110,6 @@ Optional
 + [koa-i18n](https://github.com/fundon/koa-i18n) if option i18n is set
 + [koa-less](https://github.com/chosecz/koa-less) if you choose less as css engine
 + [koa-stylus](https://github.com/yosssi/koa-stylus) if you choose style as css engine
++
 
-## Notes
-  
- Inspired by [express-generator](https://github.com/expressjs/generator)
-  
- Koa currently requires node 0.11.x for the --harmony flag which exposes generators to your script. If you're running an earlier version of node you may install [n](https://github.com/visionmedia/n), a node version manager to quickly install 0.11.x:  
-
-```
-$ npm install -g n
-$ n 0.11.13
-```
-
-## Structure
-
-+ [configs] routes, general app stuff, authorization
-+ - `main` application configuration
-+ - `auth` authorization and authentication config
-+ - `database` load models and initialize the database here
-+ - `routes` load controllers and define the routes
-+ [controllers] plain objects to use its methods as routes
-+ - `site` 
-+ - `auth` authentication and authorization methods
-+ [locales] if i18n option is set
-+ [models] uses [Waterline ORM](https://github.com/balderdashy/waterline/)
-+ [views] the V
-+ - [error] error views (401,403,404,error)
-+ - [layouts] layouts folder (main, error)
-+ - [site] application views (index, login)
-+ [web] public folder
-+ - [css]
-+ - - `main.css`
-+ - [img]
-+ - [js]
-+ - - `main.js`
+Inspired by [express-generator](https://github.com/expressjs/generator)
