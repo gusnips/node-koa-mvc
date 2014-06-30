@@ -27,13 +27,13 @@
 
 ## Options
 
- + `-t, --template [engine]`: add template <engine> support [ejs|swig]. Defaults to ejs.
- + `-i, --i18n`:  add i18n support. Translations used by [i18n-node-2](https://github.com/jeresig/i18n-node-2) ported to [koa-i18n](https://github.com/fundon/koa-i18n)
- + `-d, --db [engine]`: add database <engine> support [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk
- + `-c, --css [engine]`: add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css
- + `-s, --session`: add session support
- + `-a, --auth [type]`: add [type] authentication support [facebook|google|github]. Type is optional. Use ':' as separator for multiples (f.x. facebook:google)
- + `-f, --force`: force on non-empty directory
+ + `-t, --template [engine]` add template <engine> support [ejs] only for now. Defaults to ejs.
+ + `-i, --i18n` add i18n support. Translations used by [i18n-node-2](https://github.com/jeresig/i18n-node-2) ported to [koa-i18n](https://github.com/fundon/koa-i18n)
+ + `-d, --db [engine]` add database <engine> support [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk
+ + `-c, --css [engine]` add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css
+ + `-s, --session` add session support
+ + `-a, --auth [type]` add [type] authentication support [facebook|google|github|bitbucket|local]. Type is optional. Use ':' as separator for multiples (f.x. facebook:google). Defaults to local only. Set as null, false or 0 to disable
+ + `-f, --force` force on non-empty directory
  
 
 ## Notes
@@ -58,7 +58,7 @@ $ n 0.11.13
 + - `site` 
 + - `auth` authentication and authorization methods
 + [locales] if i18n option is set
-+ [models] uses 
++ [models] uses [Waterline ORM](https://github.com/balderdashy/waterline/)
 + [views] the V
 + - [error] error views (401,403,404,error)
 + - [layouts] layouts folder (main, error)

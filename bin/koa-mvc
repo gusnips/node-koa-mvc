@@ -10,7 +10,11 @@ var renderer= require('ejs')
 var version = require('../package.json').version
 
 function authParser(values){
-    var auths= {};
+    if(values==='false' || values==='null' || values=='0' || values==null)
+        return false;
+    var auths= {
+        local: true
+    };
     values.length && values.split(':').map(function(value){
        auths[value]= true;
     });
@@ -19,16 +23,21 @@ function authParser(values){
 
 // CLI
 program
-  .version(version)
-  .usage('[options] [dir]')
-  .option('-t, --template [engine]', 'add template <engine> support [ejs|swig]. Defaults to ejs','ejs')
-  .option('-d, --db [engine]', 'add database <engine> support [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk', 'disk')
-  .option('-c, --css [engine]', 'add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css','plain')
-  .option('-i, --i18n', 'add i18n support', Boolean, false)
-  .option('-s, --session', 'add session support', Boolean, false)
-  .option('-a, --auth [type]', 'add [type] authentication support [facebook|google|github|bitbucket]. Use it like facebook:google for multiples', authParser)
-  .option('-f, --force', 'force on non-empty directory')
-  .parse(process.argv);
+    .version(version)
+    .usage('[options] [dir]')
+    .option('-t, --template [engine]', 'add template <engine> support [ejs]. Defaults to ejs','ejs')
+    .option('-d, --db [engine]', 'add database <engine> support [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk', 'disk')
+    .option('-c, --css [engine]', 'add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css','plain')
+    .option('-e, --theme [name]', 'switch application theme to <name> [white|green|violet|red]. Defaults to red','red')
+    .option('-a, --auth [type]', 
+        'add [type] authentication support [facebook|google|github|bitbucket]. Use it like facebook:google for multiples. Defaults to local only', 
+        authParser,
+        {facebook: false,google:false,github: false,bitbucket:false}
+    )
+    .option('-i, --i18n', 'add i18n support', Boolean, false)
+    .option('-s, --session', 'add session support', Boolean, true)
+    .option('-f, --force', 'force on non-empty directory')
+    .parse(process.argv);
 
 // Path
 var source_path=path.join(__dirname, '..', 'templates','app');
@@ -39,7 +48,7 @@ var app_name = path.basename(destination_path);
 
 // Options 
 //template engine
-if(['ejs','swig'].indexOf(program.template)===-1)
+if(['ejs'].indexOf(program.template)===-1)
     throw new Error('Invalid template engine "'+program.template+'" ');
 //db
 if(['mysql','postgresql','mongo','redis','memory','disk'].indexOf(program.db)===-1)
@@ -155,13 +164,13 @@ mkdirp(path, 0755, function(err){
             // CSS Engine support
             switch (program.css) {
                 case 'less':
-                    copy_template('/web/css/main.less', '/web/css/main.less');
+                    render_template('/web/css/main.less');
                     break;
                 case 'stylus':
-                    copy_template('/web/css/main.styl');
+                    render_template('/web/css/main.styl');
                     break;
                 default:
-                    copy_template('/web/css/main.css');
+                    render_template('/web/css/main.css');
             }
         });
     });
