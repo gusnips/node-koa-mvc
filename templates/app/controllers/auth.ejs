@@ -18,6 +18,8 @@ module.exports={
      	yield this.render('site/login')
     },
     doRegister: function *(){
+        var UserModel = this.models.user;
+        yield UserModel.create(attributes).exec(next);
      	this.body={success: true}
     },
     authSuccess: function(){

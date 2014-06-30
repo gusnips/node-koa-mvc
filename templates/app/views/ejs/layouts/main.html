@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
     <head>
-        <title><%= title%></title>
+        <title><%=title%></title>
         <meta charset='utf-8'>
-        <meta name="description" content="<%= description%>">
+        <meta name="description" content="<%=description%>">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link type="text/css" href="" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" />
-        <link type="text/css" href="" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css" />
-        <link type="text/css" href="" rel="stylesheet" href="/css/main.css" />
+        <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css" />
+        <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" />
+        <link type="text/css" rel="stylesheet" href="/css/main.css" />
         <!--[if lt IE 9]>
             <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
             <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
     <body>
-        <header id="navigation" class="navbar navbar-default navbar-fixed-top" role="banner">
+        <header class="navbar navbar-default navbar-fixed-top" role="banner">
             <div class="container">
                 <div class="navbar-header">
                     <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".tr-navbar-collapse">
@@ -23,15 +23,17 @@
                         <span class="fa fa-bar"></span>
                     </button>
                     <div id="logo"></div>
-                    <a href="/" class="navbar-brand"><%=title%></a>
+                    <a href="/" class="navbar-brand"><%= title %></a>
                 </div>
                 <nav class="collapse navbar-collapse tr-navbar-collapse" role="navigation">
                     <ul class="nav navbar-nav" id="navbar">
-                        <li class="active"><a href="#home" class="smothscroll">Home</a></li>
-                        <li><a href="#desc" class="smothscroll">Description</a></li>
-                        <li><a href="#showcase" class="smothScroll">Showcase</a></li>
-                        <li><a href="#contact" class="smothScroll">Contact</a></li>
+                        <li>
+                            <a href="/">
+                                <i class="fa fa-home"></i> Home
+                            </a>
+                        </li>
                     </ul>
+                    <% if(typeof user === 'undefined'){ %>
                     <ul class="nav navbar-nav navbar-right">
                     <% if(isAuthenticated){ -%>
                         <li class="dropdown">
@@ -42,50 +44,61 @@
                                 </li>
                             </ul>
                         </li>
-                    <% }else{ -%>
-                        <li><a href="#" data-toggle="modal" data-target="#loginModal"><i class="fa fa-sign-in"></i> Login</a></li>
-                        <li><a href="/register"><i class="fa fa-users"></i> Register</a></li>
-                    <% } %>
+                    <% } else { -%>
+                        <li>
+                            <a class="btn btn-sm navbar-btn" data-toggle="modal" data-target="#loginModal">
+                                <i class="fa fa-sign-in"></i> Login
+                            </a>
+                        </li>
+                        <li>
+                            <a class="btn btn-sm navbar-btn" href="/register">
+                                <i class="fa fa-users"></i> Register
+                            </a>
+                        </li>
+                    <% } -%>
+                    <% } -%>
                     </ul>
                 </nav>
             </div>
         </header>
-        
+        <% if(typeof user === 'undefined'){ %>
         <% if(!isAuthenticated){ -%>
         <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                  <h1 class="text-center">Login</h1>
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                      <h3 class="text-center">Login</h3>
+                  </div>
+                  <div class="modal-body">
+                      <form class="form col-md-12 center-block" action="/login" id="modalLoginForm" method="post">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa-2x"></i></span>
+                            <input type="text" class="form-control input-lg" placeholder="Email" name="email">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-asterisk fa-2x"></i></span>
+                            <input type="password" class="form-control input-lg" placeholder="Password" name="password">
+                        </div>
+                          <div class="form-group">
+                                <a class="btn btn-lg col-md-5 col-sm-6 col-md-offset-1 col-sm-6" href="/register">
+                                    <i class="fa fa-users"></i> Register
+                                </a>
+                                <button type="submit" class="btn btn-primary btn-lg col-md-5 col-md-offset-1 col-sm-6">
+                                    <i class="fa fa-sign-in"></i> Sign In
+                                </button>
+                          </div>
+                      </form>
+                      <div style="clear: both"></div>
+                  </div>
               </div>
-              <div class="modal-body">
-                  <form class="form col-md-12 center-block" action="/login" id="loginForm">
-                    <div class="form-group">
-                      <input type="text" class="form-control input-lg" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                      <input type="password" class="form-control input-lg" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                      <button class="btn btn-primary btn-lg btn-block"><i class="fa fa-sign-in"></i> Sign In</button>
-                      <span class="pull-right"><a href="/register"><i class="fa fa-users"></i> Register</a></span>
-                      <span><a href="/reset-password"><i class="fa fa-support"></i> Need help?</a></span>
-                    </div>
-                  </form>
-              </div>
-              <div class="modal-footer">
-                  <div class="col-md-12">
-                  <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-                  </div>    
-              </div>
-          </div>
           </div>
         </div>
         <% } -%>
-        <% if(flash) -%>
+        <% } -%>
+        <% if(typeof flash === 'undefined'){ -%>
         <div class='container'>
-            <div class='messages row' style="margin-top: 20px;">
+            <div class='messages row' style="margin-top: 20px">
                 <div class='col-md-12'>
                     <div class="alert alert-danger" <% if (!flash.error) { %> style="display:none" <% } %>>
                         <a class="close" data-dismiss="alert">x</a>
@@ -98,7 +111,7 @@
                     </div>
                     <div class="alert alert-info" <% if (!flash.info) { %> style="display:none" <% } %>>
                         <a class="close" data-dismiss="alert">x</a>
-                        <%=message.info %>
+                        <%=flash.info %>
                     </div>
                     <div class="alert alert-success" <% if (!flash.success) { %> style="display:none" <% } %>>
                         <a class="close" data-dismiss="alert">x</a>
@@ -109,13 +122,16 @@
         </div>
         <% } -%>
         <!-- content -->
-        <%- body %>
+        <div id="wrapper">
+            <%- body %>
+        </div>
         <!-- footer -->
-        <footer id="c">
-            <p class="container" style="text-align: center">
-                Powered by <a href="https://github.com/gusnips/node-koa-mvc/" target="_new">koa-mvc</a>
-            </p>
-        </footer>
+        <p class="small text-muted text-center">
+            Copyright &copy; 2014, <%=title%>. 
+            Powered by: <a href="https://github.com/gusnips/node-koa-mvc/" target="_new">koa-mvc</a>
+            Design by: <a href="http://gettemplate.com/" rel="designer" title="Free Bootstrap templates">GetTemplate</a>
+        </p>
+        <br/>
         <!-- render scripts -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>

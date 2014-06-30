@@ -134,6 +134,9 @@ mkdirp(path, 0755, function(err){
                 copy_template(baseViewsPath+'/site/login.html','views/site/login.html');
         });
         mkdir('/views/error', function(){
+            copy_template(baseViewsPath+'/error/401.html', 'views/error/401.html');
+            copy_template(baseViewsPath+'/error/403.html', 'views/error/403.html');
+            copy_template(baseViewsPath+'/error/404.html', 'views/error/404.html');
             copy_template(baseViewsPath+'/error/error.html', 'views/error/error.html');
         });
         mkdir('/views/layouts', function(){
@@ -144,7 +147,9 @@ mkdirp(path, 0755, function(err){
 
     //###web
     mkdir('/web', function(){
-        mkdir('/web/js');
+        mkdir('/web/js', function(){
+            copy_template('/web/js/main.js', '/web/js/main.js');
+        });
         mkdir('/web/img');
         mkdir('/web/css', function(){
             // CSS Engine support

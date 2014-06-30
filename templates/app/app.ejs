@@ -39,12 +39,11 @@ app.use(passport.session())
 <% } -%>
 <% } -%>
 
-require('./configs/routes')(app, passport);
+app.use(require('./configs/routes')(app, passport));
 require('./configs/database')(app, config.database, function(err, ontology){
     if(err)
         throw err
-    app.context.models=ontology.collections;
-    console.log(app.context.models);
+    app.context.models=ontology.collections
     console.log('database adapter initialized')
 })
 

@@ -2,7 +2,7 @@
 var passport = require('koa-passport')
 
 module.exports=function(app, config){
-    <% if(program.session){ -%>
+<% if(program.session){ -%>
     passport.serializeUser(function(user, done) {
         done(null, user.id)
     })
@@ -11,7 +11,8 @@ module.exports=function(app, config){
         let user={ id: 1, username: 'admin' }
         done(null, user)
     })
-    <% } -%>
+<% } -%>
+
     var LocalStrategy = require('passport-local').Strategy
     passport.use(new LocalStrategy(function(username, password, done) {
         let user={ id: 1, username: 'admin' };
@@ -21,35 +22,38 @@ module.exports=function(app, config){
             done(null, false)
         }
     }))
-    
-    <% if(program.auth.facebook){ -%>
+
+<% if(program.auth.facebook){ -%>
     var FacebookStrategy = require('passport-facebook').Strategy
     passport.use(new FacebookStrategy(config.facebook, function (token, tokenSecret, profile, done) {
         let user=profile
         done(null, user)
     }))
-    <% } -%>
-    <% if(program.auth.google){ -%>
+<% } -%>
+
+<% if(program.auth.google){ -%>
     var GoogleStrategy = require('passport-google').Strategy
     passport.use(new GoogleStrategy(config.google, function(identifier, profile, done) {
         let user=profile
         done(null, user)
     }))
-    <% } -%>
-    <% if(program.auth.github){ -%>
+<% } -%>
+
+<% if(program.auth.github){ -%>
     var GithubStrategy = require('passport-github').Strategy;
     passport.use(new GithubStrategy(config.github, function(accessToken, refreshToken, profile, done) {
         let user = profile
         return done(null, user)
     }))
-    <% } -%>
-    <% if(program.auth.bitbucket){ -%>
+<% } -%>
+
+<% if(program.auth.bitbucket){ -%>
     var BitbucketStrategy = require('passport-bitbucket').Strategy;
     passport.use(new BitbucketStrategy(config.bitbucket, function(token, tokenSecret, profile, done) {
         let user = profile
         return done(null, user)
     }))
-    <% } -%>
+<% } -%>
         
     return passport
 }

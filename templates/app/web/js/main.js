@@ -11,5 +11,16 @@ $(function(){
         });
         return false;
     });
-    $(".carousel").carousel({interval: 3500});
+    $('#illustration').hover( function(){
+        $(this).addClass('expand');
+    }, function(){
+        $(this).removeClass('expand');
+    });
+    $('form input').tooltip({
+        placement: 'top',
+        trigger: 'focus',
+        title: function (){
+            return $(this).attr('placeholder');
+        }
+    });
 });
