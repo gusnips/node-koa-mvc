@@ -27,14 +27,41 @@
 
 ## Options
 
- + `-t, --template [engine]` add template <engine> support [ejs] only for now. Defaults to ejs.
- + `-i, --i18n` add i18n support. Translations used by [i18n-node-2](https://github.com/jeresig/i18n-node-2) ported to [koa-i18n](https://github.com/fundon/koa-i18n)
- + `-d, --db [engine]` add database <engine> support [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk
- + `-c, --css [engine]` add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css
- + `-s, --session` add session support
- + `-a, --auth [type]` add [type] authentication support [facebook|google|github|bitbucket|local]. Type is optional. Use ':' as separator for multiples (f.x. facebook:google). Defaults to local only. Set as null, false or 0 to disable
- + `-f, --force` force on non-empty directory
- 
+ `-t, --theme [name]`  
+ switch application theme to <name> [white|green|violet|red]. Defaults to red.  
+ `-d, --db [engine]`  
+ change database <engine> to one of [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk.  
+ `-c, --css [engine]`  
+ add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css.  
+ `-S, --no-session` remove [session](https://github.com/koajs/generic-session) support. Session is enabled by default.  
+ `-a, --auth [type]`  
+ add [type] authentication support [facebook|google|github|bitbucket|local]. Type is optional.  
+ Use ':' as separator for multiples (f.x. facebook:google). Defaults to local only. Set as 0 to disable.  
+ `-e, --template [engine]`  
+ change template engine. Support [ejs] only for now. Defaults to ejs.  
+ `-i, --i18n`  
+ add i18n support. Translations used by [i18n-node-2](https://github.com/jeresig/i18n-node-2) ported to [koa-i18n](https://github.com/fundon/koa-i18n)  
+ `-f, --force`  
+ force on non-empty directory  
+
+## Uses
+
++ [koa](http://koajs.com) (obviously)
++ [ejs](https://github.com/koajs/ejs) EJS as view engine
++ [waterline](https://github.com/balderdashy/waterline) as ORM
+
+Optional
+
++ [koa-bodyparser](https://github.com/koajs/body-parser)
++ [koa-static](https://github.com/koajs/static)
++ [koa-generic-session](https://github.com/koajs/generic-session) if has session support
++ [koa-flash](https://github.com/rickharrison/koa-flash) for session flash messages
++ [koa-router](https://github.com/alexmingoia/koa-router)
++ [koa-passport](https://github.com/rkusa/koa-passport) for auth
++ [koa-locale](https://github.com/fundon/koa-locale) if option i18n is set
++ [koa-i18n](https://github.com/fundon/koa-i18n) if option i18n is set
++ [koa-less](https://github.com/chosecz/koa-less) if you choose less as css engine
++ [koa-stylus](https://github.com/yosssi/koa-stylus) if you choose style as css engine
 
 ## Notes
   

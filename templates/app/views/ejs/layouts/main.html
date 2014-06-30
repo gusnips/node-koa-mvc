@@ -33,7 +33,6 @@
                             </a>
                         </li>
                     </ul>
-                    <% if(typeof user === 'undefined'){ %>
                     <ul class="nav navbar-nav navbar-right">
                     <% if(isAuthenticated){ -%>
                         <li class="dropdown">
@@ -56,12 +55,10 @@
                             </a>
                         </li>
                     <% } -%>
-                    <% } -%>
                     </ul>
                 </nav>
             </div>
         </header>
-        <% if(typeof user === 'undefined'){ %>
         <% if(!isAuthenticated){ -%>
         <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog">
@@ -95,10 +92,9 @@
           </div>
         </div>
         <% } -%>
-        <% } -%>
-        <% if(typeof flash === 'undefined'){ -%>
+        <% if(typeof flash !== 'undefined'){ -%>
         <div class='container'>
-            <div class='messages row' style="margin-top: 20px">
+            <div class='messages row'>
                 <div class='col-md-12'>
                     <div class="alert alert-danger" <% if (!flash.error) { %> style="display:none" <% } %>>
                         <a class="close" data-dismiss="alert">x</a>

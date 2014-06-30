@@ -25,17 +25,18 @@ function authParser(values){
 program
     .version(version)
     .usage('[options] [dir]')
-    .option('-t, --template [engine]', 'add template <engine> support [ejs]. Defaults to ejs','ejs')
-    .option('-d, --db [engine]', 'add database <engine> support [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk', 'disk')
+    .option('-t, --theme [name]', 'switch application theme to <name> [white|green|violet|red]. Defaults to red','red')
+    .option('-d, --db [engine]', 'change database <engine> to one of [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk.', 'disk')
     .option('-c, --css [engine]', 'add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css','plain')
-    .option('-e, --theme [name]', 'switch application theme to <name> [white|green|violet|red]. Defaults to red','red')
     .option('-a, --auth [type]', 
-        'add [type] authentication support [facebook|google|github|bitbucket]. Use it like facebook:google for multiples. Defaults to local only', 
+        'add [type] authentication support [facebook|google|github|bitbucket|locale].\n'+
+        'Use it like facebook:google for multiples. Defaults to local only', 
         authParser,
-        {facebook: false,google:false,github: false,bitbucket:false}
+        {local: true}
     )
+    .option('-e, --template [engine]', 'change template engine. Support [ejs] only for now. Defaults to ejs.','ejs')
     .option('-i, --i18n', 'add i18n support', Boolean, false)
-    .option('-s, --session', 'add session support', Boolean, true)
+    .option('-S, --no-session', 'remove session support. Session is enabled by default.', Boolean, true)
     .option('-f, --force', 'force on non-empty directory')
     .parse(process.argv);
 

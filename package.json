@@ -1,36 +1,31 @@
 {
-    "name": "koa-mvc",
-    "description": "Koa MVC generator",
+    "name": "node-koa-mvc",
     "version": "0.0.1",
-    "author": "Gustavo Salomé Silva <gustavonips@gmail.com>",
+    "private": true,
+    "description": "Generated with koa-mvc",
     "dependencies": {
-        "commander": "^1.3.2",
-        "mkdirp": "^0.3.5",
-        "ejs": "*"
+        "co": "3.x.x",
+        "koa": "0.x.x",
+        "koa-bodyparser": "1.x.x",
+        "koa-static": "1.x.x",
+        "koa-router": "3.x.x",
+        "koa-generic-session": "1.x.x",
+        "koa-flash": "0.0.x",
+        "koa-ejs": "1.x.x",
+        "koa-error-ejs": "0.0.x",
+        "koa-passport": "0.x.x",
+        "passport-local": "1.x.x",
+        "waterline": "0.10.*",
+        "sails-disk": "0.10.*",
+        "bcrypt": "rvagg/node.bcrypt.js#nan"
     },
-    "keywords": [
-        "koa",
-        "bootstrap",
-        "seed",
-        "mvc",
-        "seed",
-        "boilerplate"
-    ],
-    "main": "bin/koa-mvc",
-    "bin": {
-        "koa-mvc": "./bin/koa-mvc"
+    "devDependencies": {
     },
     "engines": {
         "node": ">= 0.11.9"
     },
-    "readmeFilename": "README.md",
-    "homepage": "https://github.com/gusnips/node-koa-mvc",
-    "repository": {
-        "type": "git",
-        "url": "git@github.com:gusnips/node-koa-mvc.git"
-    },
-    "bugs": {
-        "url": "https://github.com/gusnips/node-koa-mvc/issues"
-    },
-    "license": "MIT"
+    "scripts": {
+        "start": "node ./bin/www",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    }
 }
