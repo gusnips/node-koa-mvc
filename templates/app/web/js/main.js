@@ -1,20 +1,16 @@
 $(function(){
-    $('form').submit(function(){ 
-        var $this=this; 
+    $('form').on('submit',function(e){ 
+        var $this=$(this); 
         $.post($this.attr('action'),$this.serialize(),function(result){ 
             if(result.success)
                 alert('success');
             else
-                alert('error');
+                alert('error');  
         }).error(function(){
-            alert('http error');
+            alert('error');
+            console.log(arguments);
         });
         return false;
-    });
-    $('#illustration').hover( function(){
-        $(this).addClass('expand');
-    }, function(){
-        $(this).removeClass('expand');
     });
     $('form input').tooltip({
         placement: 'top',
@@ -22,5 +18,10 @@ $(function(){
         title: function (){
             return $(this).attr('placeholder');
         }
+    });
+    $('#illustration').on('hover',function(){
+        $(this).addClass('expand');
+    }, function(){
+        $(this).removeClass('expand');
     });
 });

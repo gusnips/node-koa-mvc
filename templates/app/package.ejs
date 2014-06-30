@@ -5,6 +5,7 @@
     "description": "Generated with koa-mvc",
     "dependencies": {
         "co": "3.x.x",
+        "thunkify": "2.x.x",
         "koa": "0.x.x",
         "koa-bodyparser": "1.x.x",
         "koa-static": "1.x.x",
@@ -50,12 +51,13 @@
         "bcrypt": "rvagg/node.bcrypt.js#nan"
     },
     "devDependencies": {
+        "debug": "1.x.x"
     },
     "engines": {
         "node": ">= 0.11.9"
     },
     "scripts": {
-        "start": "node ./bin/www",
+        "start": "node --harmony app",
         "test": "echo \"Error: no test specified\" && exit 1"
     }
 }

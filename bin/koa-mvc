@@ -92,7 +92,7 @@ mkdirp(path, 0755, function(err){
         console.log('     $ cd %s && npm install', path);
         console.log();
         console.log('   run the app:');
-        console.log('     $ DEBUG=' + app_name + ' ./bin/www');
+        console.log('     $ DEBUG=' + app_name + ' node --harmony app');
         console.log();
     });
 
@@ -174,13 +174,6 @@ mkdirp(path, 0755, function(err){
                     render_template('/web/css/main.css');
             }
         });
-    });
-    
-    mkdir('/bin',function(){
-        render_template('/bin/www','/bin/www',{
-            name: app_name,
-            program: program,
-        },0755);
     });
 
     render_template('/package.ejs','/package.json',{

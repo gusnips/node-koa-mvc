@@ -70,7 +70,7 @@
                   <div class="modal-body">
                       <form class="form col-md-12 center-block" action="/login" id="modalLoginForm" method="post">
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-envelope fa-2x"></i></span>
+                            <span class="input-group-addon"><i class="fa fa-at-sign fa-2x"></i></span>
                             <input type="text" class="form-control input-lg" placeholder="Email" name="email">
                         </div>
                         <div class="input-group">
@@ -98,20 +98,19 @@
                 <div class='col-md-12'>
                     <div class="alert alert-danger" <% if (!flash.error) { %> style="display:none" <% } %>>
                         <a class="close" data-dismiss="alert">x</a>
-                        <span></span>
-                        <%=flash.error %>
+                        <span><%=flash.error %></span>
                     </div>
                     <div class="alert alert-warning" <% if (!flash.warning) { %> style="display:none" <% } %>>
                         <a class="close" data-dismiss="alert">x</a>
-                        <%=flash.warning %>
+                        <span><%=flash.warning %></span>
                     </div>
                     <div class="alert alert-info" <% if (!flash.info) { %> style="display:none" <% } %>>
                         <a class="close" data-dismiss="alert">x</a>
-                        <%=flash.info %>
+                        <span><%=flash.info %></span>
                     </div>
                     <div class="alert alert-success" <% if (!flash.success) { %> style="display:none" <% } %>>
                         <a class="close" data-dismiss="alert">x</a>
-                        <%=flash.success %>
+                        <span><%=flash.success %></span>
                     </div>
                 </div>
             </div>
@@ -127,7 +126,9 @@
             Powered by: <a href="https://github.com/gusnips/node-koa-mvc/" target="_new">koa-mvc</a>
             Design by: <a href="http://gettemplate.com/" rel="designer" title="Free Bootstrap templates">GetTemplate</a>
         </p>
-        <br/>
+        <p class="small text-muted text-center">
+            If you'd like to report a bug or suggest an improvement, post an issue on <a href="https://github.com/gusnips/node-koa-mvc/issues">GitHub</a> and I'll be happy to help!
+        </p>
         <!-- render scripts -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>

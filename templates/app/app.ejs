@@ -6,6 +6,9 @@ app.name= config.name
 app.keys= config.keys
 app.env= config.env
 
+if(config.env==='development')
+	var debug = require('debug')('<%=name%>');
+
 app.use(require('koa-bodyparser')(config.bodyparser))
 app.use(require('koa-static')(config.static.directory, config.static))
 <% if(program.css==='less'){ -%>
@@ -47,6 +50,9 @@ require('./configs/database')(app, config.database, function(err, ontology){
     console.log('database adapter initialized')
 })
 
-app.listen(config.port || 3000, function(){
-	console.log('Server running on port '+config.port || 3000)
-})
+if (!module.parent) {
+	app.listen(config.port || 3000, function(){
+		console.log('Server running on port '+config.port || 3000)
+	})
+} else
+	module.exports=app;
