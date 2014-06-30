@@ -27,25 +27,26 @@
 
 ## Options
 
- `-t, --theme [name]`
-   switch application theme to <name> [white|green|violet|red]. Defaults to red.
- `-d, --db [engine]`
-   change database <engine> to one of [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk.
- `-c, --css [engine]`
-   add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css.
- `-S, --no-session` remove [session](https://github.com/koajs/generic-session) support. Session is enabled by default.
- `-a, --auth [type]`
-   add [type] authentication support [facebook|google|github|bitbucket|local]. Type is optional.
-   Use ':' as separator for multiples (f.x. facebook:google). Defaults to local only. Set as 0 to disable.
- `-e, --template [engine]`
-   change template engine. Support [ejs] only for now. Defaults to ejs.
- `-i, --i18n`
-   add i18n support. Translations used by [i18n-node-2](https://github.com/jeresig/i18n-node-2) ported to [koa-i18n](https://github.com/fundon/koa-i18n)
- `-f, --force`
-   force on non-empty directory
- 
+ `-t, --theme [name]` 
+  switch application theme to <name> [white|green|violet|red]. Defaults to red.  
+ `-d, --db [engine]`  
+   change database <engine> to one of [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk.  
+ `-c, --css [engine]`  
+   add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css.  
+ `-S, --no-session`  
+ remove [session](https://github.com/koajs/generic-session) support. Session is enabled by default.  
+ `-a, --auth [type]`  
+   add [type] authentication support [facebook|google|github|bitbucket|local]. Type is optional.  
+   Use ':' as separator for multiples (f.x. facebook:google). Defaults to local only. Set as 0 to disable.  
+ `-e, --template [engine]`  
+   change template engine. Support [ejs] only for now. Defaults to ejs.  
+ `-i, --i18n`  
+   add i18n support. Translations used by [i18n-node-2](https://github.com/jeresig/i18n-node-2) ported to [koa-i18n](https://github.com/fundon/koa-i18n)  
+ `-f, --force`  
+   force on non-empty directory 
+   
    Example using layout green, mysql as db, facebook and google authentication:
- 
+   
  ```bash
     $ koa-mvc ~/www/test-koa-mvc -t green --db mysql -a facebook:google
     $ cd ~/www/test-koa-mvc
