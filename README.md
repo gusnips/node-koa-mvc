@@ -27,13 +27,13 @@
 
 ## Options
 
- + -t, --template [engine]: add template <engine> support [ejs|swig]. Defaults to ejs.
- + -i, --i18n:  add i18n support. Translations used by [i18n-node-2](https://github.com/jeresig/i18n-node-2) ported to [koa-i18n](https://github.com/fundon/koa-i18n)
- + -d, --db [engine]: add database <engine> support [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk
- + -c, --css [engine]: add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css
- + -s, --session: add session support
- + -a, --auth [type]: add [type] authentication support [facebook|google|github]. Type is optional. Use ':' as separator for multiples (f.x. facebook:google)
- + -f, --force force on non-empty directory
+ + `-t, --template [engine]`: add template <engine> support [ejs|swig]. Defaults to ejs.
+ + `-i, --i18n`:  add i18n support. Translations used by [i18n-node-2](https://github.com/jeresig/i18n-node-2) ported to [koa-i18n](https://github.com/fundon/koa-i18n)
+ + `-d, --db [engine]`: add database <engine> support [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk
+ + `-c, --css [engine]`: add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css
+ + `-s, --session`: add session support
+ + `-a, --auth [type]`: add [type] authentication support [facebook|google|github]. Type is optional. Use ':' as separator for multiples (f.x. facebook:google)
+ + `-f, --force`: force on non-empty directory
  
 
 ## Notes
@@ -50,20 +50,22 @@ $ n 0.11.13
 ## Structure
 
 + [configs] routes, general app stuff, authorization
-+ - auth.js 
-+ - database.js 
-+ - main.js
-+ - routes.js 
-+ [controllers] the C
++ - `main` application configuration
++ - `auth` authorization and authentication config
++ - `database` load models and initialize the database here
++ - `routes` load controllers and define the routes
++ [controllers] plain objects to use its methods as routes
++ - `site` 
++ - `auth` authentication and authorization methods
 + [locales] if i18n option is set
 + [models] uses 
 + [views] the V
-+  [layouts] by default main.html
-+ [widgets] react components
++ - [error] error views (401,403,404,error)
++ - [layouts] layouts folder (main, error)
++ - [site] application views (index, login)
 + [web] public folder
 + - [css]
-+ - [fonts]
++ - - `main.css`
 + - [img]
 + - [js]
-+ - - [components] React components
-+ - - [libs]
++ - - `main.js`
