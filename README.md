@@ -42,7 +42,7 @@
 ```bash
     $ koa-mvc ~/www/test-koa-mvc -t green --db mysql -a facebook:google
     $ cd ~/www/test-koa-mvc
-    $ sudo npm install
+    $ npm install
     $ node --harmony app  # server will now be running on localhost:3000
 ```
 
