@@ -110,7 +110,4 @@ Optional
 + [koa-locale](https://github.com/fundon/koa-locale) if option i18n is set
 + [koa-i18n](https://github.com/fundon/koa-i18n) if option i18n is set
 + [koa-less](https://github.com/chosecz/koa-less) if you choose less as css engine
-+ [koa-stylus](https://github.com/yosssi/koa-stylus) if you choose style as css engine
-+
-
-Inspired by [express-generator](https://github.com/expressjs/generator)
++ [koa-stylus](https://github.com/yosssi/koa-stylus) if you choose stylus as css engine
