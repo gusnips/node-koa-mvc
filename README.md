@@ -54,6 +54,13 @@
 + convert css to less (works if there is raw css but it's not ideal)
 + add tests
 
+Also 
+
++ Generate controller command
++ Generate model command
++ Generate CRUD command
+
+
 ## Notes
   
  Koa currently requires node 0.11.x for the --harmony flag which exposes generators to your script. If you're running an earlier version of node you may install [n](https://github.com/visionmedia/n), a node version manager to quickly install 0.11.x:
