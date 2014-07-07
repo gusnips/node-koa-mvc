@@ -1,6 +1,6 @@
 # Koa MVC
 
-  Opinionated and minimalist MVC generator for [koa](http://koajs.com).
+  Opinionated and minimalist MVC generator for [koa](http://koajs.com). Inspired by [express-generator](https://github.com/expressjs/generator).  
 
 ## Quick Start
 
