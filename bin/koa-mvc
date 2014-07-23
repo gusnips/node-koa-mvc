@@ -25,17 +25,17 @@ function authParser(values){
 program
     .version(version)
     .usage('[options] [dir]')
-    .option('-t, --theme [name]', 'switch application theme to <name> [white|green|violet|red]. Defaults to red','red')
+    .option('-t, --theme [name]','switch application theme to <name> [white|green|violet|red]. Defaults to red.','red')
     .option('-d, --db [engine]', 'change database <engine> to one of [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk.', 'disk')
-    .option('-c, --css [engine]', 'add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css','plain')
-    .option('-a, --auth [type]', 
-        'add [type] authentication support [facebook|google|github|bitbucket|locale].\n'+
-        'Use it like facebook:google for multiples. Defaults to local only', 
+    .option('-c, --css [engine]', 'add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css.','plain')
+    .option('-a, --auth [type]',
+        'add [type] authentication support [facebook|google|github|bitbucket|local]. Type is optional..\n'+
+        'Use ':' as separator for multiples (f.x. facebook:google). Defaults to local only. Set as 0 to disable.',
         authParser,
         {local: true}
     )
     .option('-e, --template [engine]', 'change template engine. Support [ejs] only for now. Defaults to ejs.','ejs')
-    .option('-i, --i18n', 'add i18n support', Boolean, false)
+    .option('-i, --i18n', 'add i18n support. Translations used by i18n-node-2 ported to koa-i18n  ', Boolean, false)
     .option('-S, --no-session', 'remove session support. Session is enabled by default.', Boolean, true)
     .option('-f, --force', 'force on non-empty directory')
     .parse(process.argv);
@@ -47,7 +47,7 @@ var destination_path = path.resolve(program.args.shift() || '.');
 // App name
 var app_name = path.basename(destination_path);
 
-// Options 
+// Options
 //template engine
 if(['ejs'].indexOf(program.template)===-1)
     throw new Error('Invalid template engine "'+program.template+'" ');
@@ -108,7 +108,7 @@ mkdirp(path, 0755, function(err){
             });
         }
     });
-    
+
     mkdir('/configs', function(){
         render_template('/configs/main.ejs','/configs/main.js',{
             name: app_name,
@@ -127,7 +127,7 @@ mkdirp(path, 0755, function(err){
     mkdir('/models', function(){
         copy_template('models/user.js');
     });
-    
+
     //###locales
     if(program.i18n){
         mkdir('/locales', function(){
@@ -177,7 +177,7 @@ mkdirp(path, 0755, function(err){
     });
 
     render_template('/package.ejs','/package.json',{
-        program: program, 
+        program: program,
         name: app_name
     },0755);
 
@@ -185,7 +185,7 @@ mkdirp(path, 0755, function(err){
         name: app_name,
         program: program,
     },0755);
-        
+
 });
 }
 
@@ -235,7 +235,7 @@ function render_template(from, to, options, mode){
 
 function emptyDirectory(path, fn) {
     fs.readdir(path, function(err, files){
-        if (err && 'ENOENT' != err.code) 
+        if (err && 'ENOENT' != err.code)
             throw err;
         fn(!files || !files.length);
     });
