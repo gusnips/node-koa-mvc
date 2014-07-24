@@ -7,7 +7,8 @@ $(function(){
         $message.show().find('span').html(message);
         $('html, body').animate({
             scrollTop: $message.offset().top
-        }, 2000);
+        }, 500);
+        $('.modal').modal('hide');
     };
     $('form').on('submit',function(e){
         var $this=$(this);
@@ -27,10 +28,5 @@ $(function(){
         title: function (){
             return $(this).attr('placeholder');
         }
-    });
-    $('#illustration').on('hover',function(){
-        $(this).addClass('expand');
-    }, function(){
-        $(this).removeClass('expand');
     });
 });

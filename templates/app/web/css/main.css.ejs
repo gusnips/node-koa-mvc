@@ -23,15 +23,15 @@
 /********************************************************/
 /*                 Page background                      */
 /********************************************************/
-body, .content { 
-	background: #fff; 
-	color:#333; 
+body, .content {
+	background: #fff;
+	color:#333;
 }
 
 /********************************************************/
 /*                     Typography                       */
 /********************************************************/
-h1, h2, h3, h4, h5, h6 { 
+h1, h2, h3, h4, h5, h6 {
 	font-family: "Open sans", Helvetica, Arial;
 	font-weight: 300;
 }
@@ -48,9 +48,7 @@ p, .jumbotron p {
 /*                        Header                        */
 /********************************************************/
 
-#wrapper{
-	margin-top: 58px;
-}
+
 .header {
 	margin-bottom: 0;
 	padding-bottom: 0px;
@@ -81,8 +79,8 @@ p, .jumbotron p {
 	text-align: center;
 	text-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
 }
-.header .small { 
-	font-size: 0.9em; 
+.header .small {
+	font-size: 0.9em;
 	line-height: 1.2em;
 	text-align: center;
 	text-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
@@ -106,7 +104,7 @@ p, .jumbotron p {
 	-moz-transition: all 0.8s;
 	transition: all 0.8s;
 }
-.expand img{ margin-bottom:120px; margin-top:-100px; }
+#illustration:hover img{ margin-bottom:120px; margin-top:-100px; }
 
 
 
@@ -114,16 +112,14 @@ p, .jumbotron p {
 /*                       Content                        */
 /********************************************************/
 
-.fa-at-sign:before { content: '@'; }
-
-.content { 
-	position: relative; 
-	z-index: 999; 
-	margin-bottom:40px;  
+.content {
+	position: relative;
+	z-index: 999;
+	margin-bottom:40px;
 }
 
-.jumbotron { 
-	background:#f5f5f5; 
+.jumbotron {
+	background:#f5f5f5;
 }
 
 .content .lead { font-family: Georgia; font-style: italic; color:#999; }
@@ -131,7 +127,7 @@ p, .jumbotron p {
 .space-before { padding-top:20px; }
 .space-after { padding-bottom:20px; }
 
-.img-feature { 
+.img-feature {
 	border:15px solid #f5f5f5;
 	margin:0 auto;
 	-webkit-border-radius: 50% ;
@@ -148,6 +144,7 @@ p, .jumbotron p {
   background-color: rgba(0,0,0,0.3);
   border-color: rgba(255,255,255,0.3);
   padding: 0.3em 0;
+  margin-bottom: -2px;
 }
 .navbar .navbar-brand {
   font-family: "Open sans", Helvetica, Arial;
@@ -172,6 +169,8 @@ p, .jumbotron p {
 /********************************************************/
 /*                        Forms                         */
 /********************************************************/
+
+.fa-at-sign:before { content: '@'; }
 
 .well h3 {
     padding-top: 0;
@@ -211,7 +210,7 @@ p, .jumbotron p {
 	.header p { font-size: 15px; }
 
 	#illustration { margin-bottom:-215px;}
-	.expand img{ margin-bottom:200px; margin-top:-180px; }
+	#illustration:hover img{ margin-bottom:200px; margin-top:-180px; }
 }
 
 @media(max-width: 767px){
@@ -227,7 +226,7 @@ p, .jumbotron p {
 	.header .lead { font-size:22px; }
 
 	#illustration { margin-bottom:-310px;}
-	.expand img{ margin-bottom:300px; margin-top:-190px; }
+	#illustration:hover img{ margin-bottom:300px; margin-top:-190px; }
 
 }
 @media(min-width: 992px){
@@ -238,7 +237,7 @@ p, .jumbotron p {
 	.space-after { padding-bottom:40px; }
 
 	#illustration { margin-bottom:-380px;}
-	.expand img{ margin-bottom:370px; margin-top:-260px; }
+	#illustration:hover img{ margin-bottom:370px; margin-top:-260px; }
 }
 
 @media(min-width: 1199px){
@@ -308,13 +307,13 @@ a:visited { color: #5A8B86; }
 
 .header {
 	color: white;
-	background: #005363; 
+	background: #005363;
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#005363), color-stop(100%,#187489));
 	background: -webkit-linear-gradient(top,  #005363 0%,#187489 100%);
 	background: -o-linear-gradient(top,  #005363 0%,#187489 100%);
 	background: -ms-linear-gradient(top,  #005363 0%,#187489 100%);
 	background: linear-gradient(to bottom,  #005363 0%,#187489 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#005363', endColorstr='#187489',GradientType=0 ); 
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#005363', endColorstr='#187489',GradientType=0 );
 }
 .btn,.btn:visited{
 	color:#fff;
@@ -331,8 +330,8 @@ a:visited { color: #5A8B86; }
 <% } else if(program.theme === 'violet'){ -%>
 
 h1, h2, h3, h4, h5, h6 { color: #5E7690; }
-a{ color: #00b0b0; }
-a:hover, a:focus { color: #007777; }
+a{ color: #5E7690; }
+a:hover, a:focus { color: #5D577B; }
 a:visited { color: #5A8B86; }
 
 .header {
@@ -344,7 +343,7 @@ a:visited { color: #5A8B86; }
 	background: -o-linear-gradient(top,  #313A5B 0%,#5D577B 100%);
 	background: -ms-linear-gradient(top,  #313A5B 0%,#5D577B 100%);
 	background: linear-gradient(to bottom,  #313A5B 0%,#5D577B 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#313A5B', endColorstr='#5D577B',GradientType=0 ); 
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#313A5B', endColorstr='#5D577B',GradientType=0 );
 }
 .btn,.btn:visited{
 	color:#fff;
