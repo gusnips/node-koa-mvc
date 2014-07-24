@@ -95,11 +95,9 @@ $ n 0.11.13
 
 ## Show me
 
-green with auth:
-![koa-mvc green app print screen](https://github.com/gusnips/node-koa-mvc/raw/master/images/green-auth.png "koa-mvc green app print screen")
-
-green:
-![koa-mvc green app print screen](https://github.com/gusnips/node-koa-mvc/raw/master/images/green.png "koa-mvc green app print screen")
+green with facebook auth `koa-mvc myapp -t green -a facebook:github:google`:  
+![koa-mvc green app print screen](https://github.com/gusnips/node-koa-mvc/raw/master/images/green-auth.jpg "koa-mvc green app print screen")
+![koa-mvc green app login print screen](https://github.com/gusnips/node-koa-mvc/raw/master/images/green.jpg "koa-mvc green app login print screen")
 
 ## Uses
 
