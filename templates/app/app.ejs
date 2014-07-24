@@ -42,7 +42,11 @@ app.use(passport.session())
 <% } -%>
 <% } -%>
 
+<% if(program.auth){ -%>
 app.use(require('./configs/routes')(app, passport));
+<% } else { -%>
+app.use(require('./configs/routes')(app));
+<% } -%>
 require('./configs/database')(app, config.database, function(err, ontology){
     if(err)
         throw err

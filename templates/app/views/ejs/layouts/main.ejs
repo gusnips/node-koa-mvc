@@ -33,6 +33,7 @@
                             </a>
                         </li>
                     </ul>
+                    <%% if(program.auth){ -%%>
                     <ul class="nav navbar-nav navbar-right">
                     <% if(isAuthenticated){ -%>
                         <li class="dropdown">
@@ -56,9 +57,11 @@
                         </li>
                     <% } -%>
                     </ul>
+                    <%% } -%%>
                 </nav>
             </div>
         </header>
+        <%% if(program.auth){ -%%>
         <% if(!isAuthenticated){ -%>
         <div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog">
@@ -92,7 +95,8 @@
           </div>
         </div>
         <% } -%>
-        <% if(typeof flash !== 'undefined'){ -%>
+        <%% } -%%>
+        <%% if(program.session){ -%%>
         <div class='container'>
             <div class='messages row'>
                 <div class='col-md-12'>
@@ -115,19 +119,20 @@
                 </div>
             </div>
         </div>
-        <% } -%>
+        <%% } -%%>
         <!-- content -->
         <div id="wrapper">
             <%- body %>
         </div>
         <!-- footer -->
         <p class="small text-muted text-center">
-            Copyright &copy; 2014, <%=title%>. 
+            Copyright &copy; 2014, <%=title%>.
             Powered by: <a href="https://github.com/gusnips/node-koa-mvc/" target="_new">koa-mvc</a>
             Design by: <a href="http://gettemplate.com/" rel="designer" title="Free Bootstrap templates">GetTemplate</a>
         </p>
         <p class="small text-muted text-center">
-            If you'd like to report a bug or suggest an improvement, post an issue on <a href="https://github.com/gusnips/node-koa-mvc/issues">GitHub</a> and I'll be happy to help!
+            If you'd like to report a bug or suggest an improvement, post an issue on
+            <a href="https://github.com/gusnips/node-koa-mvc/issues">GitHub</a> and I'll be happy to help!
         </p>
         <!-- render scripts -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

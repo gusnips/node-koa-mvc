@@ -29,14 +29,15 @@ program
     .option('-d, --db [engine]', 'change database <engine> to one of [mysql|postgresql|mongo|redis|memory|disk]. Defaults to disk.', 'disk')
     .option('-c, --css [engine]', 'add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css.','plain')
     .option('-a, --auth [type]',
-        'add [type] authentication support [facebook|google|github|bitbucket|local]. Type is optional..\n'+
-        'Use ':' as separator for multiples (f.x. facebook:google). Defaults to local only. Set as 0 to disable.',
+        'add [type] authentication support [facebook|google|github|bitbucket|local]. Defaults to local only.\n'+
+        'Use ":" as separator for multiples (f.x. facebook:google). Use --no-auth (or -A for short) to disable.',
         authParser,
         {local: true}
     )
     .option('-e, --template [engine]', 'change template engine. Support [ejs] only for now. Defaults to ejs.','ejs')
     .option('-i, --i18n', 'add i18n support. Translations used by i18n-node-2 ported to koa-i18n  ', Boolean, false)
     .option('-S, --no-session', 'remove session support. Session is enabled by default.', Boolean, true)
+    .option('-A, --no-auth', 'remove authentication support. Authentication is enabled by default.', Boolean, true)
     .option('-f, --force', 'force on non-empty directory')
     .parse(process.argv);
 
@@ -137,66 +138,51 @@ mkdirp(path, 0755, function(err){
 
     //###views
     mkdir('/views', function(){
-        var  baseViewsPath='views/'+program.template;
+        var baseViewsPath='views/'+program.template;
+        //changes open clone to be able to use ejs in templates already using ejs
+        var template_options={open: '<%%', close: '%%>'};
         mkdir('/views/site', function(){
-            copy_template(baseViewsPath+'/site/index.html','views/site/index.html');
+            copy_template(baseViewsPath+'/site/index.ejs','views/site/index.html',template_options);
             if(program.auth)
-                copy_template(baseViewsPath+'/site/login.html','views/site/login.html');
+                copy_template(baseViewsPath+'/site/login.ejs','views/site/login.html',template_options);
         });
         mkdir('/views/error', function(){
-            copy_template(baseViewsPath+'/error/401.html', 'views/error/401.html');
-            copy_template(baseViewsPath+'/error/403.html', 'views/error/403.html');
-            copy_template(baseViewsPath+'/error/404.html', 'views/error/404.html');
-            copy_template(baseViewsPath+'/error/error.html', 'views/error/error.html');
+            render_template(baseViewsPath+'/error/401.ejs', 'views/error/401.html',template_options);
+            render_template(baseViewsPath+'/error/403.ejs', 'views/error/403.html',template_options);
+            render_template(baseViewsPath+'/error/404.ejs', 'views/error/404.html',template_options);
+            render_template(baseViewsPath+'/error/error.ejs', 'views/error/error.html',template_options);
         });
         mkdir('/views/layouts', function(){
-            copy_template(baseViewsPath+'/layouts/main.html', 'views/layouts/main.html');
-            copy_template(baseViewsPath+'/layouts/error.html', 'views/layouts/error.html');
+            render_template(baseViewsPath+'/layouts/main.ejs', 'views/layouts/main.html',template_options);
+            render_template(baseViewsPath+'/layouts/error.ejs', 'views/layouts/error.html',template_options);
         });
     });
 
     //###web
     mkdir('/web', function(){
         mkdir('/web/js', function(){
-            copy_template('/web/js/main.js', '/web/js/main.js');
+            render_template('/web/js/main.ejs', '/web/js/main.js');
         });
         mkdir('/web/img');
         mkdir('/web/css', function(){
             // CSS Engine support
             switch (program.css) {
                 case 'less':
-                    render_template('/web/css/main.less');
+                    render_template('/web/css/main.less.ejs','/web/css/main.less');
                     break;
                 case 'stylus':
-                    render_template('/web/css/main.styl');
+                    render_template('/web/css/main.styl.ejs','/web/css/main.styl');
                     break;
                 default:
-                    render_template('/web/css/main.css');
+                    render_template('/web/css/main.css.ejs','/web/css/main.css');
             }
         });
     });
 
-    render_template('/package.ejs','/package.json',{
-        program: program,
-        name: app_name
-    },0755);
-
-    render_template('/app.ejs', '/app.js',{
-        name: app_name,
-        program: program,
-    },0755);
+    render_template('/package.ejs','/package.json',{},0755);
+    render_template('/app.ejs', '/app.js',{},0755);
 
 });
-}
-
-/**
- * Check if the given directory `path` is empty.
- *
- * @param {String} path
- * @param {Function} fn
- */
-function load_template(name) {
-    return fs.readFileSync(path.join(source_path, name), 'utf-8')
 }
 
 /**
@@ -220,8 +206,14 @@ function copy_template(from, to) {
 function render_template(from, to, options, mode){
     if(!to)
         to=from;
+    var default_options={program: program,name: app_name};
     if(!options)
-        options={program: program,name: app_name};
+        options=default_options;
+    else {
+        for(x in default_options)
+            options[x]=default_options[x];
+    }
+
     var str= renderer.render(load_template(from), options);
     return write(to, str, mode);
 }
@@ -232,13 +224,8 @@ function render_template(from, to, options, mode){
  * @param {String} path
  * @param {Function} fn
  */
-
-function emptyDirectory(path, fn) {
-    fs.readdir(path, function(err, files){
-        if (err && 'ENOENT' != err.code)
-            throw err;
-        fn(!files || !files.length);
-    });
+function load_template(name) {
+    return fs.readFileSync(path.join(source_path, name), 'utf-8')
 }
 
 /**
@@ -270,6 +257,21 @@ function mkdir(name, fn) {
         if (err) throw err;
         console.log('   \033[36mcreate\033[0m : ' + writePath);
         fn && fn();
+    });
+}
+
+/**
+ *
+ * Check if the given directory `path` is empty.
+ * @param {String} path
+ * @param {Function} fn
+ */
+
+function emptyDirectory(path, fn) {
+    fs.readdir(path, function(err, files){
+        if (err && 'ENOENT' != err.code)
+            throw err;
+        fn(!files || !files.length);
     });
 }
 

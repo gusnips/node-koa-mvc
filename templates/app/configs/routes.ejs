@@ -9,51 +9,51 @@ var secured = function *(next) {
     }
 }
 
-module.exports=function(app, passport){
+module.exports=function(app<% if(program.auth){%>, passport<% } -%>){
     var router= new Router();
     ///// Site
     var siteController=require('../controllers/site')
     var authController=require('../controllers/auth')
-    
+
     //main
     router.get('/',siteController.index)
     //contact
     router.post('/contact', siteController.doContact)
-    
+
     <% if(program.auth){ -%>
     //register
     router.get('/register', authController.register)
     router.post('/register', authController.doRegister)
-    
+
     //auth
     router.get('/login', authController.login)
     router.post('/login', authController.doLogin)
     router.all('/logout', authController.logout)
-    
+
     <% if(program.auth.facebook){ -%>
     router.get('/auth/facebook',passport.authenticate('facebook'))
-    router.get('/auth/facebook/callback', 
+    router.get('/auth/facebook/callback',
         passport.authenticate('facebook', { failureRedirect: '/login?error=facebook' }),
         authController.authSuccess
     )
     <% } -%>
     <% if(program.auth.google){ -%>
     router.get('/auth/google',passport.authenticate('google'))
-    router.get('/auth/google/callback', 
+    router.get('/auth/google/callback',
         passport.authenticate('google', { failureRedirect: '/login?error=google' }),
         authController.authSuccess
     )
     <% } -%>
     <% if(program.auth.github){ -%>
     router.get('/auth/github',passport.authenticate('github'))
-    router.get('/auth/github/callback', 
+    router.get('/auth/github/callback',
         passport.authenticate('github', { failureRedirect: '/login?error=github' }),
         authController.authSuccess
     )
     <% } -%>
     <% if(program.auth.bitbucket){ -%>
     router.get('/auth/bitbucket',passport.authenticate('bitbucket'))
-    router.get('/auth/bitbucket/callback', 
+    router.get('/auth/bitbucket/callback',
         passport.authenticate('bitbucket', { failureRedirect: '/login?error=bitbucket' }),
         authController.authSuccess
     )
