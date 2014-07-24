@@ -10,7 +10,6 @@ if(config.env==='development')
 	var debug = require('debug')('<%=name%>');
 
 app.use(require('koa-bodyparser')(config.bodyparser))
-app.use(require('koa-static')(config.static.directory, config.static))
 <% if(program.css==='less'){ -%>
 app.use(require('koa-less')(config.static.directory))
 <% } else if(program.css==='stylus'){ -%>
@@ -20,6 +19,7 @@ app.use(require('koa-stylus')(config.static.directory))
 require('koa-locale')(app)
 app.use(require('koa-i18n')(app, config.i18n))
 <% } -%>
+app.use(require('koa-static')(config.static.directory, config.static))
 
 <% if(program.session){ -%>
 app.use(require('koa-generic-session')(config.session))

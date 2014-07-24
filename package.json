@@ -1,7 +1,7 @@
 {
     "name": "koa-mvc",
     "description": "Koa MVC generator",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "author": "Gustavo Salomé Silva <gustavonips@gmail.com>",
     "dependencies": {
         "commander": "^1.3.2",
