@@ -9,7 +9,7 @@ var secured = function *(next) {
     }
 }
 
-module.exports=function(app<% if(program.auth){%>, passport<% } -%>){
+module.exports=function(app<% if(program.auth){%>, passport<% }%>){
     var router= new Router();
     ///// Site
     var siteController=require('../controllers/site')

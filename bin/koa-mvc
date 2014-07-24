@@ -30,14 +30,13 @@ program
     .option('-c, --css [engine]', 'add stylesheet <engine> support [less|stylus|plain]. Defaults to plain css.','plain')
     .option('-a, --auth [type]',
         'add [type] authentication support [facebook|google|github|bitbucket|local]. Defaults to local only.\n'+
-        'Use ":" as separator for multiples (f.x. facebook:google). Use --no-auth (or -A for short) to disable.',
+        'Use ":" as separator for multiples (f.x. local:facebook:google). Set to "false" (like `koa-mvc ... -a false`) to disable.',
         authParser,
         {local: true}
     )
     .option('-e, --template [engine]', 'change template engine. Support [ejs] only for now. Defaults to ejs.','ejs')
     .option('-i, --i18n', 'add i18n support. Translations used by i18n-node-2 ported to koa-i18n  ', Boolean, false)
     .option('-S, --no-session', 'remove session support. Session is enabled by default.', Boolean, true)
-    .option('-A, --no-auth', 'remove authentication support. Authentication is enabled by default.', Boolean, true)
     .option('-f, --force', 'force on non-empty directory')
     .parse(process.argv);
 
@@ -126,13 +125,13 @@ mkdirp(path, 0755, function(err){
 
     //###models
     mkdir('/models', function(){
-        copy_template('models/user.js');
+        render_template('models/user.ejs','models/user.js');
     });
 
     //###locales
     if(program.i18n){
         mkdir('/locales', function(){
-            copy_template('locales/en.js');
+            render_template('locales/en.ejs','locales/en.js');
         });
     }
 
@@ -142,9 +141,9 @@ mkdirp(path, 0755, function(err){
         //changes open clone to be able to use ejs in templates already using ejs
         var template_options={open: '<%%', close: '%%>'};
         mkdir('/views/site', function(){
-            copy_template(baseViewsPath+'/site/index.ejs','views/site/index.html',template_options);
+            render_template(baseViewsPath+'/site/index.ejs','views/site/index.html',template_options);
             if(program.auth)
-                copy_template(baseViewsPath+'/site/login.ejs','views/site/login.html',template_options);
+                render_template(baseViewsPath+'/site/login.ejs','views/site/login.html',template_options);
         });
         mkdir('/views/error', function(){
             render_template(baseViewsPath+'/error/401.ejs', 'views/error/401.html',template_options);

@@ -13,6 +13,7 @@
                             <div class="row">
                                 <div class="col-xs-12"><h3>Already a member? Login</h3></div>
                             </div>
+                            <%% if(program.auth.local){ -%%>
                             <div class="row">
                                 <form id="loginForm" method="post" action="/login">
                                     <div class="input-group">
@@ -28,16 +29,25 @@
                                     </div>
                                 </form>
                             </div>
+                            <%% } -%%>
                             <div class="row">
                                 <div class="col-xs-12"><h3>Social Sign In</h3></div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12">
                                     <ul id="social-sign-in" class="inline-block list-unstyled">
-                                      <li><a target="_blank" href="/auth/facebook" title="Sign in with Facebook" rel="nofollow"><i class="fa fa-facebook-square fa-3x"></i></a></li>
-                                      <li><a target="_blank" href="/auth/google" title="Sign in with Google" rel="nofollow"><i class="fa fa-google-plus-square fa-3x"></i></a></li>
-                                      <li><a target="_blank" href="/auth/github" title="Sign in with GitHub" rel="nofollow"><i class="fa fa-github-square fa-3x"></i></a></li>
-                                      <li><a target="_blank" href="/auth/bitbucket" title="Sign in with Bitbucket" rel="nofollow"><i class="fa fa-bitbucket-square fa-3x"></i></a></li>
+                                        <%% if(program.auth.facebook){ -%%>
+                                        <li><a target="_blank" href="/auth/facebook" title="Sign in with Facebook" rel="nofollow"><i class="fa fa-facebook-square fa-3x"></i></a></li>
+                                        <%% } -%%>
+                                        <%% if(program.auth.google){ -%%>
+                                        <li><a target="_blank" href="/auth/google" title="Sign in with Google" rel="nofollow"><i class="fa fa-google-plus-square fa-3x"></i></a></li>
+                                        <%% } -%%>
+                                        <%% if(program.auth.github){ -%%>
+                                        <li><a target="_blank" href="/auth/github" title="Sign in with GitHub" rel="nofollow"><i class="fa fa-github-square fa-3x"></i></a></li>
+                                        <%% } -%%>
+                                        <%% if(program.auth.bitbucket){ -%%>
+                                        <li><a target="_blank" href="/auth/bitbucket" title="Sign in with Bitbucket" rel="nofollow"><i class="fa fa-bitbucket-square fa-3x"></i></a></li>
+                                        <%% } -%%>
                                     </ul>
                                 </div>
                             </div>
