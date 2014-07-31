@@ -8,21 +8,21 @@
 
  Create the app:
 
-```bash
-    $ npm install -g koa-mvc
-    $ koa-mvc /projects/foo && cd /projects/foo
+```sh
+    npm install -g koa-mvc
+    koa-mvc /projects/foo && cd /projects/foo
 ```
 
  Install dependencies:
 
-```bash
-    $ npm install
+```sh
+    npm install
 ```
 
  Rock and Roll
 
-```bash
-    $ node --harmony app
+```sh
+    node --harmony app
 ```
 
 ## Options
@@ -39,12 +39,64 @@
 
    Example using layout green, mysql as db, facebook and google authentication:
 
-```bash
-    $ koa-mvc ~/www/test-koa-mvc -t green --db mysql -a local:facebook:google
-    $ cd ~/www/test-koa-mvc
-    $ npm install
-    $ node --harmony app  # server will now be running on localhost:3000
+```sh
+    koa-mvc ~/www/test-koa-mvc -t green --db mysql -a local:facebook:google
+    cd ~/www/test-koa-mvc
+    npm install
+    node --harmony app
 ```
+
+Go to [http://localhost:3000](http://localhost:3000) and have fun hacking
+
+
+## Enough talk, show me something
+
+green with facebook auth  
+`koa-mvc myapp -t green -a facebook:github:google`:  
+  
+![koa-mvc green app print screen](https://github.com/gusnips/node-koa-mvc/raw/master/images/green-auth.jpg "koa-mvc green app print screen")
+![koa-mvc green app login print screen](https://github.com/gusnips/node-koa-mvc/raw/master/images/green.jpg "koa-mvc green app login print screen")
+
+## Structure
+
++ `configs` routes, general app stuff, authorization
++ - `main` application configuration
++ - `auth` authorization and authentication config
++ - `database` load models and initialize the database here
++ - `routes` load controllers and define the routes
++ `controllers` plain objects to use its methods as routes
++ - `site`
++ - `auth` authentication and authorization methods
++ `locales` if i18n option is set
++ `models` uses [Waterline ORM](https://github.com/balderdashy/waterline/)
++ `views` templates
++ - `error` error views (401,403,404,error)
++ - `layouts` layouts folder (main, error)
++ - `site` application views (index, login)
++ `web` public folder
++ - `css`
++ - `js`
+
+## Uses
+
++ [koa](http://koajs.com) (obviously)
++ [ejs](https://github.com/koajs/ejs) EJS as view engine
++ [waterline](https://github.com/balderdashy/waterline) as ORM
+
+Also
+
++ [koa-bodyparser](https://github.com/koajs/body-parser) to handle post data easier
++ [koa-static](https://github.com/koajs/static) exposes assets (js e css)
++ [koa-router](https://github.com/alexmingoia/koa-router) you know, for routes
+
+Optional
++ [koa-generic-session](https://github.com/koajs/generic-session) if has session support
++ [koa-flash](https://github.com/rickharrison/koa-flash) for session flash messages
++ [koa-passport](https://github.com/rkusa/koa-passport) for authentication, also passport extensions for each kind of auth 
++ [koa-locale](https://github.com/fundon/koa-locale) if option i18n is set
++ [koa-i18n](https://github.com/fundon/koa-i18n) if option i18n is set
++ [koa-less](https://github.com/chosecz/koa-less) if you choose less as css engine
++ [koa-stylus](https://github.com/yosssi/koa-stylus) if you choose stylus as css engine
 
 ## Roadmap
 
@@ -69,51 +121,3 @@ Also
 $ npm install -g n
 $ n 0.11.13
 ```
-
-## Structure
-
-+ [configs] routes, general app stuff, authorization
-+ - `main` application configuration
-+ - `auth` authorization and authentication config
-+ - `database` load models and initialize the database here
-+ - `routes` load controllers and define the routes
-+ [controllers] plain objects to use its methods as routes
-+ - `site`
-+ - `auth` authentication and authorization methods
-+ [locales] if i18n option is set
-+ [models] uses [Waterline ORM](https://github.com/balderdashy/waterline/)
-+ [views] the V
-+ - [error] error views (401,403,404,error)
-+ - [layouts] layouts folder (main, error)
-+ - [site] application views (index, login)
-+ [web] public folder
-+ - [css]
-+ - - `main.css`
-+ - [img]
-+ - [js]
-+ - - `main.js`
-
-## Show me
-
-green with facebook auth `koa-mvc myapp -t green -a facebook:github:google`:  
-![koa-mvc green app print screen](https://github.com/gusnips/node-koa-mvc/raw/master/images/green-auth.jpg "koa-mvc green app print screen")
-![koa-mvc green app login print screen](https://github.com/gusnips/node-koa-mvc/raw/master/images/green.jpg "koa-mvc green app login print screen")
-
-## Uses
-
-+ [koa](http://koajs.com) (obviously)
-+ [ejs](https://github.com/koajs/ejs) EJS as view engine
-+ [waterline](https://github.com/balderdashy/waterline) as ORM
-
-Optional
-
-+ [koa-bodyparser](https://github.com/koajs/body-parser)
-+ [koa-static](https://github.com/koajs/static)
-+ [koa-generic-session](https://github.com/koajs/generic-session) if has session support
-+ [koa-flash](https://github.com/rickharrison/koa-flash) for session flash messages
-+ [koa-router](https://github.com/alexmingoia/koa-router)
-+ [koa-passport](https://github.com/rkusa/koa-passport) for auth
-+ [koa-locale](https://github.com/fundon/koa-locale) if option i18n is set
-+ [koa-i18n](https://github.com/fundon/koa-i18n) if option i18n is set
-+ [koa-less](https://github.com/chosecz/koa-less) if you choose less as css engine
-+ [koa-stylus](https://github.com/yosssi/koa-stylus) if you choose stylus as css engine
