@@ -92,7 +92,7 @@ mkdirp(path, 0755, function(err){
         console.log('     $ cd %s && npm install', path);
         console.log();
         console.log('   run the app:');
-        console.log('     $ DEBUG=' + app_name + ' node --harmony app');
+        console.log('     $ DEBUG=' + app_name + ' node --harmony --harmony_proxies app');
         console.log();
     });
 

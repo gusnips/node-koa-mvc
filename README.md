@@ -22,7 +22,7 @@
  Rock and Roll
 
 ```sh
-    node --harmony app
+    node --harmony --harmony_proxies app
 ```
 
 ## Options
