@@ -43,7 +43,7 @@
     koa-mvc ~/www/test-koa-mvc -t green --db mysql -a local:facebook:google
     cd ~/www/test-koa-mvc
     npm install
-    node --harmony app
+    node --harmony --harmony_proxies app
 ```
 
 Go to [http://localhost:3000](http://localhost:3000) and have fun hacking
@@ -115,7 +115,7 @@ Also
 
 ## Notes
 
- Koa currently requires node 0.11.x for the --harmony flag which exposes generators to your script. If you're running an earlier version of node you may install [n](https://github.com/visionmedia/n), a node version manager to quickly install 0.11.x:
+ Koa currently requires node 0.11.x for the --harmony --harmony_proxies flags which exposes generators and proxies to your script. If you're running an earlier version of node you may install [n](https://github.com/visionmedia/n), a node version manager to quickly install 0.11.x:
 
 ```
 $ npm install -g n
